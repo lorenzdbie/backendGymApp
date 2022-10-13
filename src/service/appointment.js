@@ -15,8 +15,11 @@ const getAll = () => {
 }
 
 const getById = (id) => {
-  const appointment = APPOINTMENTS.filter(e => e.id == id);
+  console.log(id);
+  const appointment = APPOINTMENTS.filter(e => e.id === parseInt(id.replace(':', '')));
+  console.log(appointment)
   return appointment;
+
 }
 
 const create = ({
