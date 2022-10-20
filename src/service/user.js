@@ -9,13 +9,33 @@ const getAll = async () => {
   }
 };
 
-const getById = async (id) => {
+const register = async (name) => {
+  return await userRepository.create({
+    name,
+  })
+}
 
+const getById = async (id) => {
   const user = await userRepository.findById(id);
   return user;
 }
 
+const updateById = async (id, {
+  name
+}) => {
+  return await userRepository.updateById(id, {
+    name
+  });
+}
+
+const deleteById = async (id) => {
+  await userRepository.deleteById(id);
+}
+
 module.exports = {
   getAll,
-  getById
+  register,
+  getById,
+  updateById,
+  deleteById,
 }

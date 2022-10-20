@@ -8,7 +8,7 @@ const {
 const logger = getLogger();
 
 const findAll = () => {
-  return getKnex()(tables.user).select().orderBy('name', 'ASC');
+  return getKnex()(tables.user).select().orderBy('user_name', 'ASC');
 };
 
 const findCount = async () => {

@@ -7,9 +7,11 @@ module.exports = {
     await knex.schema.createTable(tables.training, (table) => {
       table.increments('training_id').primary();
 
+      table.string('name', 255).notNullable();
+
       table.string('muscleGroup', 255).notNullable();
 
-      table.unique('muscleGroup', 'idx_muscleGroup_unique');
+      table.unique('name', 'idx_name_unique');
     });
   },
   down: (knex) => {

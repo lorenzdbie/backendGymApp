@@ -9,7 +9,7 @@ const {
 const logger = getLogger();
 
 const findAll = () => {
-  return getKnex()(tables.training).select().orderBy('muscleGroup', 'ASC');
+  return getKnex()(tables.training).select().orderBy('name', 'ASC');
 }
 
 const findCount = async () => {
@@ -17,15 +17,21 @@ const findCount = async () => {
   return count['count(*)'];
 }
 
+const findByName = (name) => {
+  return getKnex()(tables.training).where('name', name).first();
+}
+
 const findById = (id) => {
   return getKnex()(tables.training).where('training_id', id).first();
 };
 
 const create = async ({
+  name,
   muscleGroup
 }) => {
   try {
     const [id] = await getKnex()(tables.training).insert({
+      name,
       muscleGroup
     });
     return id;
@@ -38,10 +44,12 @@ const create = async ({
 };
 
 const updateById = async (id, {
+  name,
   muscleGroup
 }) => {
   try {
     await getKnex()(tables.training).update({
+      name,
       muscleGroup
     }).where('training_id', id);
     return id;
@@ -68,6 +76,7 @@ const deleteById = async (id) => {
 module.exports = {
   findAll,
   findCount,
+  findByName,
   findById,
   create,
   updateById,

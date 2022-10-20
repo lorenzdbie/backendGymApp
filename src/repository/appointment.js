@@ -8,45 +8,45 @@ const {
 const logger = getLogger();
 
 const SELECT_COLUMNS = [
-  `${tables.appointment}.appointment_id`, 'date',
+  `${tables.appointment}.appointment_id`, `${tables.appointment}.appointment_date as appointment_date`,
   `${tables.user}.user_id as user_id`, `${tables.user}.user_name as user_name`,
-  `${tables.training}.training_id as training_id`, `${tables.training}.muscleGroup as training_muscleGroup`,
-  `${tables.appointmentDetails}.appointmentDetails_id as appointmentDetails_id`, `${tables.appointmentDetails}.appointmentDetails_date as appointmentDetails_date`, `${tables.appointmentDetails}.startTime as appointment_startTime`, `${tables.appointmentDetails}.endTime as appointment_endTime`, 'intensity'
+  `${tables.training}.training_id as training_id`, `${tables.training}.name as training_name`, `${tables.training}.muscleGroup as training_muscleGroup`,
+  `${tables.appointment}.startTime as startTime`, `${tables.appointment}.endTime as endTime`, `${tables.appointment}.intensity as intensity`
 ]
 
 const formatAppointment = ({
+  appointment_id,
+  appointment_date,
   user_id,
   user_name,
   training_id,
+  training_name,
   training_muscleGroup,
-  appointmentDetails_id,
-  appointmentDetails_date,
-  appointment_startTime,
-  appointment_endTime,
-  ...rest
+  startTime,
+  endTime,
+  intensity
 }) => ({
-  ...rest,
+  id: appointment_id,
+  date: appointment_date,
   user: {
     id: user_id,
     name: user_name,
   },
   training: {
     id: training_id,
+    name: training_name,
     muscleGroup: training_muscleGroup,
   },
-  appointmentDetails: {
-    id: appointmentDetails_id,
-    appointmentDate: appointmentDetails_date,
-    startTime: appointment_startTime,
-    endTime: appointment_endTime,
-  }
+  startTime: startTime,
+  endTime: endTime,
+  intensity: intensity
 });
 
 const findAll = async () => {
   const appointments = await getKnex()(tables.appointment).select(SELECT_COLUMNS)
     .join(tables.user, `${tables.appointment}.user_id`, '=', `${tables.user}.user_id`)
     .join(tables.training, `${tables.appointment}.training_id`, '=', `${tables.training}.training_id`)
-    .join(tables.appointmentDetails, `${tables.appointment}.appointmentDetails_id`, '=', `${tables.appointmentDetails}.appointmentDetails_id`)
+
     .orderBy('appointment_date', 'ASC');
 
   return appointments.map(formatAppointment);
@@ -63,7 +63,6 @@ const findById = async (id) => {
   const appointment = await getKnex()(tables.appointment)
     .join(`${tables.user}`, `${tables.appointment}.user_id`, '=', `${tables.user}.user_id`)
     .join(`${tables.training}`, `${tables.appointment}.training_id`, '=', `${tables.training}.training_id`)
-    .join(`${tables.appointmentDetails}`, `${tables.appointment}.appointmentDetails_id`, '=', `${tables.appointmentDetails}.appointmentDetails_id`)
     .where(`${tables.appointment}.appointment_id`, id)
     .first(SELECT_COLUMNS);
 
@@ -74,7 +73,8 @@ const create = async ({
   date,
   userId,
   trainingId,
-  appointmentDetailsId,
+  startTime,
+  endTime,
   intensity
 }) => {
   try {
@@ -84,10 +84,11 @@ const create = async ({
         appointment_date: date,
         user_id: userId,
         training_id: trainingId,
-        appointmentDetails_id: appointmentDetailsId,
-        intensity,
+        startTime: startTime,
+        endTime: endTime,
+        intensity: intensity,
       });
-    return id;
+    return await findById(id);
   } catch (error) {
     logger.error('Error in create', {
       error
@@ -100,7 +101,8 @@ const updateById = async (id, {
   date,
   userId,
   trainingId,
-  appointmentDetailsId,
+  startTime,
+  endTime,
   intensity
 }) => {
   try {
@@ -108,7 +110,8 @@ const updateById = async (id, {
       appointment_date: date,
       user_id: userId,
       training_id: trainingId,
-      appointmentDetails_id: appointmentDetailsId,
+      startTime: startTime,
+      endTime: endTime,
       intensity,
     }).where(`${tables.appointment}.appointment_id`, id);
     return id;

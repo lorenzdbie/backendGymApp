@@ -9,23 +9,28 @@ module.exports = {
 
     await knex(tables.training).insert([{
         training_id: 1,
-        muscleGroup: 'chest'
+        name: 'Bench press',
+        muscleGroup: 'chest',
       },
       {
         training_id: 2,
-        muscleGroup: 'legs'
+        name: 'legs',
+        muscleGroup: 'legs',
       },
       {
         training_id: 3,
-        muscleGroup: 'back'
+        name: 'Squat',
+        muscleGroup: 'Glutus Maximus, hamstring, quads',
       },
       {
         training_id: 4,
-        muscleGroup: 'arms'
+        name: 'Pull-up',
+        muscleGroup: 'Back',
       },
       {
         training_id: 5,
-        muscleGroup: 'shoulders'
+        name: 'Shoulder press',
+        muscleGroup: 'Shoulders',
       },
     ]);
   },

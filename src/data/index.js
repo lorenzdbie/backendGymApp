@@ -146,7 +146,6 @@ function getKnex() {
 const tables = {
   user: 'users',
   training: 'trainings',
-  appointmentDetails: 'appointmentDetails',
   appointment: 'appointments',
 };
 

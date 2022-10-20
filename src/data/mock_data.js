@@ -1,15 +1,30 @@
 let TRAININGS = [{
     id: 1,
-    muscleGroup: 'chest',
-  }, {
+    name: "Bench press",
+    muscleGroup: "Chest",
+  },
+  {
     id: 2,
-    muscleGroup: 'legs',
+    name: "legs",
+    muscleGroup: "Legs",
+
   },
   {
     id: 3,
-    muscleGroup: 'back',
-  }
-]
+    name: "Squat",
+    muscleGroup: "Glutus Maximus, hamstring, quads",
+  },
+  {
+    id: 4,
+    name: "Pull-up",
+    muscleGroup: "Back",
+  },
+  {
+    id: 5,
+    name: "Dumbell Curl",
+    muscleGroup: "Biceps",
+  },
+];
 
 let APPOINTMENTS = [{
     id: 1,
@@ -22,12 +37,8 @@ let APPOINTMENTS = [{
       id: 1,
       muscleGroup: "chest",
     },
-    appointmentDetails: {
-      id: 1,
-      appointmentDate: "2022-10-16T16:00:00.000Z",
-      startTime: "2022-10-16T16:00:00.000Z",
-      endTime: "2022-10-16T18:00:00.000Z",
-    },
+    startTime: "2022-10-16T16:00:00.000Z",
+    endTime: "2022-10-16T18:00:00.000Z",
     intensity: 3,
   },
   {
@@ -41,12 +52,8 @@ let APPOINTMENTS = [{
       id: 2,
       muscleGroup: "legs",
     },
-    appointmentDetails: {
-      id: 2,
-      appointmetDate: "2022-10-18T08:00:00.000Z",
-      startTime: "2022-10-18T08:00:00.000Z",
-      endTime: "2022-10-18T10:00:00.000Z",
-    },
+    startTime: "2022-10-18T08:00:00.000Z",
+    endTime: "2022-10-18T10:00:00.000Z",
     intensity: 4,
   },
   {
@@ -60,15 +67,12 @@ let APPOINTMENTS = [{
       id: 3,
       muscleGroup: "back",
     },
-    appointmentDetails: {
-      id: 3,
-      appointmentDate: "2022-10-12T10:00:00.000Z",
-      startTime: "2022-10-12T10:00:00.000Z",
-      endTime: "2022-10-12T14:00:00.000Z",
-    },
+    startTime: "2022-10-12T10:00:00.000Z",
+    endTime: "2022-10-12T14:00:00.000Z",
+
     intensity: 5,
   },
-  
+
 ]
 
 module.exports = {

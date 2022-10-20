@@ -9,15 +9,15 @@ module.exports = {
 
     await knex(tables.user).insert([{
         user_id: 1,
-        user_name: 'Lorenz De Bie',
+        user_name: 'Galdino Noreillie',
       },
       {
         user_id: 2,
-        user_name: 'Grietje VC',
+        user_name: 'Lorenz De Bie',
       },
       {
         user_id: 3,
-        user_name: 'Galdino Noreillie',
+        user_name: 'Grietje VC',
       },
       {
         user_id: 4,

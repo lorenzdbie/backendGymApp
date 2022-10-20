@@ -64,8 +64,7 @@ router.get('/api/appointments/:id', async (ctx) => {
 
 router.put('/api/appointments/:id', async (ctx) => {
   const updatedAppointment = await appointmentService.updateById(ctx.params.id, {
-    ...ctx.request.body,
-    date: new Date(ctx.request.body.date),
+    ...ctx.request.body
   });
   ctx.body = updatedAppointment;
 })
