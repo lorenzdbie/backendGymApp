@@ -15,6 +15,7 @@ module.exports = {
         startTime: new Date(2022, 11, 07, 16, 0),
         endTime: new Date(2022, 11, 07, 18, 0),
         intensity: 3,
+        specialRequest: '',
       },
       {
         appointment_id: 2,
@@ -24,6 +25,7 @@ module.exports = {
         startTime: new Date(2022, 11, 06, 14, 00),
         endTime: new Date(2022, 11, 07, 15, 30),
         intensity: 4,
+        specialRequest: '',
       },
       {
         appointment_id: 3,
@@ -33,6 +35,7 @@ module.exports = {
         startTime: new Date(2022, 11, 05, 08, 00),
         endTime: new Date(2022, 11, 05, 10, 0),
         intensity: 5,
+        specialRequest: '',
       },
       {
         appointment_id: 4,
@@ -42,6 +45,7 @@ module.exports = {
         startTime: new Date(2022, 11, 02, 11, 00),
         endTime: new Date(2022, 11, 02, 13, 30),
         intensity: 1,
+        specialRequest: '',
       },
       {
         appointment_id: 5,
@@ -51,6 +55,7 @@ module.exports = {
         startTime: new Date(2022, 11, 06, 17, 00),
         endTime: new Date(2022, 11, 07, 19, 00),
         intensity: 4,
+        specialRequest: '',
       },
       {
         appointment_id: 6,
@@ -60,6 +65,7 @@ module.exports = {
         startTime: new Date(2022, 11, 03, 16, 30),
         endTime: new Date(2022, 11, 03, 18, 0),
         intensity: 2,
+        specialRequest: '',
       },
       {
         appointment_id: 7,
@@ -69,6 +75,7 @@ module.exports = {
         startTime: new Date(2022, 11, 07, 12, 00),
         endTime: new Date(2022, 11, 07, 13, 15),
         intensity: 1,
+        specialRequest: '',
       },
       {
         appointment_id: 8,
@@ -78,6 +85,7 @@ module.exports = {
         startTime: new Date(2022, 11, 06, 10, 00),
         endTime: new Date(2022, 11, 06, 12, 00),
         intensity: 4,
+        specialRequest: '',
       },
       {
         appointment_id: 9,
@@ -87,6 +95,7 @@ module.exports = {
         startTime: new Date(2022, 11, 04, 09, 00),
         endTime: new Date(2022, 11, 04, 10, 30),
         intensity: 5,
+        specialRequest: '',
       },
     ]);
   },

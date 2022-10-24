@@ -31,7 +31,14 @@ let APPOINTMENTS = [{
     date: '2022-10-07T00:00:00.000Z',
     user: {
       id: 2,
-      name: 'Lorenz De Bie'
+      name: 'Lorenz De Bie',
+      birthdate: "1988-12-12T00:00:00.000Z",
+      email: 'lorenz.debie@hotmail.com',
+      password: '12345',
+      weight: '83,0kg',
+      height: '1,87m',
+      credits: '5',
+      role: 'user',
     },
     training: {
       id: 1,
@@ -40,13 +47,21 @@ let APPOINTMENTS = [{
     startTime: "2022-10-16T16:00:00.000Z",
     endTime: "2022-10-16T18:00:00.000Z",
     intensity: 3,
+    specialRequests: ''
   },
   {
     id: 2,
     date: '2022-10-06T00:00:00.000Z',
     user: {
       id: 3,
-      name: 'Grietje'
+      name: 'Grietje',
+      birthdate: "1978-04-17T00:00:00.000Z",
+      email: 'grietje@gmail.com',
+      password: '%ByI&1',
+      weight: '83,0kg',
+      height: '1,87m',
+      credits: '5',
+      rol: 'user',
     },
     training: {
       id: 2,
@@ -55,13 +70,21 @@ let APPOINTMENTS = [{
     startTime: "2022-10-18T08:00:00.000Z",
     endTime: "2022-10-18T10:00:00.000Z",
     intensity: 4,
+    specialRequests: ''
   },
   {
     id: 3,
     date: '2022-10-05T00:00:00.000Z',
     user: {
       id: 1,
-      name: 'Galdino'
+      name: 'Galdino',
+      birthdate: "1996-09-06T00:00:00.000Z",
+      email: 'dino@hotmail.com',
+      password: 'a123b',
+      weight: '83,0kg',
+      height: '1,87m',
+      credits: '10',
+      rol: 'admin',
     },
     training: {
       id: 3,
@@ -71,6 +94,7 @@ let APPOINTMENTS = [{
     endTime: "2022-10-12T14:00:00.000Z",
 
     intensity: 5,
+    specialRequests: ''
   },
 
 ]

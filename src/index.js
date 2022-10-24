@@ -6,6 +6,7 @@ const {
 const bodyParser = require('koa-bodyparser');
 const Router = require('@koa/router');
 const appointmentService = require('./service/appointment');
+const userService = require('./service/user');
 const koaCors = require('@koa/cors');
 const {
   initializeData
@@ -46,6 +47,11 @@ const router = new Router();
 router.get('/api/appointments', async (ctx) => {
   logger.info(JSON.stringify(ctx.request));
   ctx.body = await appointmentService.getAll();
+})
+
+router.get('/api/users', async (ctx) => {
+  logger.info(JSON.stringify(ctx.request));
+  ctx.body = await userService.getAll();
 })
 
 router.post('/api/appointments', async (ctx) => {

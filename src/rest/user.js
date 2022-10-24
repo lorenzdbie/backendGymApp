@@ -14,6 +14,11 @@ const register = async (ctx) => {
   ctx.body = user;
 }
 
+const login = async(ctx) =>  {
+  const user = userService.login(ctx.params.email, ctx.params.password);
+  ctx.body = user;
+}
+
 
 const updateUserById = async (ctx) => {
   const user = await userService.updateById(ctx.params.id, {
@@ -30,6 +35,8 @@ const deleteUserById = async (ctx) => {
 module.exports = {
   getAllUsers,
   getUserById,
+  register,
+  login,
   updateUserById,
   deleteUserById,
 }

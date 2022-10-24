@@ -8,7 +8,7 @@ const {
 const logger = getLogger();
 
 const findAll = () => {
-  return getKnex()(tables.user).select().orderBy('user_name', 'ASC');
+  return getKnex()(tables.user).select().orderBy('lastName', 'ASC').orderBy('firstName', 'ASC');
 };
 
 const findCount = async () => {
@@ -20,12 +20,35 @@ const findById = (id) => {
   return getKnex()(tables.user).where('user_id', id).first();
 };
 
+const findByEmailAndPassword = (({
+  email,
+  password
+}) => {
+  return getKnex()(tables.user).where('email', email).where('password', password).first();
+});
+
 const create = async ({
-  user_name
+  user_firstName,
+  user_lastName,
+  birthdate,
+  email,
+  password,
+  weight,
+  height,
+  credits,
+  role
 }) => {
   try {
     const [id] = await getKnex()(tables.user).insert({
-      user_name
+      user_firstName,
+      user_lastName,
+      birthdate,
+      email,
+      password,
+      weight,
+      height,
+      credits,
+      role
     });
     return id;
   } catch (error) {
@@ -37,11 +60,27 @@ const create = async ({
 };
 
 const updateById = async (id, {
-  user_name
+  user_firstName,
+  user_lastName,
+  birthdate,
+  email,
+  password,
+  weight,
+  height,
+  credits,
+  role
 }) => {
   try {
     await getKnex()(tables.user).update({
-      user_name
+      user_firstName,
+      user_lastName,
+      birthdate,
+      email,
+      password,
+      weight,
+      height,
+      credits,
+      role
     }).where('user_id', id);
     return id;
   } catch (error) {
@@ -68,6 +107,7 @@ module.exports = {
   findAll,
   findCount,
   findById,
+  findByEmailAndPassword,
   create,
   updateById,
   deleteById,

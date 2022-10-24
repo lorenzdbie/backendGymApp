@@ -9,10 +9,39 @@ const getAll = async () => {
   }
 };
 
-const register = async (name) => {
+const register = async ({
+  user_firstName,
+  user_lastName,
+  birthdate,
+  email,
+  password,
+  weight,
+  height,
+  credits,
+  role
+}) => {
   return await userRepository.create({
-    name,
+    user_firstName,
+    user_lastName,
+    birthdate,
+    email,
+    password,
+    weight,
+    height,
+    credits,
+    role
   })
+}
+
+const login = async ({
+  email,
+  password
+}) => {
+  const user = await userRepository.findByEmailAndPassword({
+    email,
+    password
+  });
+  return user;
 }
 
 const getById = async (id) => {
@@ -21,10 +50,26 @@ const getById = async (id) => {
 }
 
 const updateById = async (id, {
-  name
+  user_firstName,
+  user_lastName,
+  birthdate,
+  email,
+  password,
+  weight,
+  height,
+  credits,
+  role
 }) => {
   return await userRepository.updateById(id, {
-    name
+    user_firstName,
+    user_lastName,
+    birthdate,
+    email,
+    password,
+    weight,
+    height,
+    credits,
+    role
   });
 }
 
@@ -35,6 +80,7 @@ const deleteById = async (id) => {
 module.exports = {
   getAll,
   register,
+  login,
   getById,
   updateById,
   deleteById,

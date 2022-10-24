@@ -7,9 +7,18 @@ module.exports = {
     await knex.schema.createTable(tables.user, (table) => {
       table.increments('user_id').primary();
 
-      table.string('user_name', 255).notNullable();
+      table.string('firstName', 255).notNullable();
+      table.string('lastName', 255).notNullable();
+      table.dateTime('birthdate').notNullable();
+      table.string('email', 255).notNullable();
+      table.string('password', 255).notNullable();
+      table.float('weight');
+      table.float('height');
+      table.integer('credits');
+      table.string('role').notNullable();
 
-      table.unique('user_name', 'idx_user_name_unique');
+
+      table.unique('email', 'idx_email_unique');
     });
   },
   down: (knex) => {

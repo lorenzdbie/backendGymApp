@@ -33,12 +33,13 @@ const create = async ({
   startTime,
   endTime,
   intensity,
-  user
+  userId,
+  specialRequest,
 }) => {
 
-  const userId = await userService.register({
-    name: user
-  });
+  // const userId = await userService.register({
+  //   name: user
+  // });
   const id = await appointmentRepository.create({
     date,
     userId,
@@ -46,6 +47,7 @@ const create = async ({
     startTime,
     endTime,
     intensity,
+    specialRequest,
   });
   return getById(id);
 }
@@ -56,12 +58,13 @@ const updateById = async (id, {
   startTime,
   endTime,
   intensity,
-  user
+  userId,
+  specialRequest,
 }) => {
 
-  const userId = await userService.register({
-    name: user
-  });
+  // const userId = await userService.register({
+  //   name: user
+  // });
 
   await appointmentRepository.updateById(id, {
     date,
@@ -69,7 +72,8 @@ const updateById = async (id, {
     trainingId,
     startTime,
     endTime,
-    intensity
+    intensity,
+    specialRequest,
   });
   return getById(id);
 }

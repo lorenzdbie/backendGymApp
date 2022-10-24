@@ -22,6 +22,7 @@ module.exports = {
       table.dateTime('endTime').notNullable();
 
       table.integer('intensity');
+      table.text('specialRequest');
 
     });
   },

@@ -9,28 +9,33 @@ const logger = getLogger();
 
 const SELECT_COLUMNS = [
   `${tables.appointment}.appointment_id`, `${tables.appointment}.appointment_date as appointment_date`,
-  `${tables.user}.user_id as user_id`, `${tables.user}.user_name as user_name`,
+  `${tables.user}.user_id as user_id`, `${tables.user}.firstName as firstName`, `${tables.user}.lastName as lastName`, `${tables.user}.email as email`,
   `${tables.training}.training_id as training_id`, `${tables.training}.name as training_name`, `${tables.training}.muscleGroup as training_muscleGroup`,
-  `${tables.appointment}.startTime as startTime`, `${tables.appointment}.endTime as endTime`, `${tables.appointment}.intensity as intensity`
+  `${tables.appointment}.startTime as startTime`, `${tables.appointment}.endTime as endTime`, `${tables.appointment}.intensity as intensity`, `${tables.appointment}.specialRequest as specialRequest`
 ]
 
 const formatAppointment = ({
   appointment_id,
   appointment_date,
   user_id,
-  user_name,
+  firstName,
+  lastName,
+  email,
   training_id,
   training_name,
   training_muscleGroup,
   startTime,
   endTime,
-  intensity
+  intensity,
+  specialRequest,
 }) => ({
   id: appointment_id,
   date: appointment_date,
   user: {
     id: user_id,
-    name: user_name,
+    firstNamw: firstName,
+    lastName: lastName,
+    email: email,
   },
   training: {
     id: training_id,
@@ -39,7 +44,8 @@ const formatAppointment = ({
   },
   startTime: startTime,
   endTime: endTime,
-  intensity: intensity
+  intensity: intensity,
+  specialRequest: specialRequest
 });
 
 const findAll = async () => {
@@ -75,7 +81,8 @@ const create = async ({
   trainingId,
   startTime,
   endTime,
-  intensity
+  intensity,
+  specialRequest,
 }) => {
   try {
     const [id] = await getKnex()(tables.appointment)
@@ -87,6 +94,7 @@ const create = async ({
         startTime: startTime,
         endTime: endTime,
         intensity: intensity,
+        specialRequest: specialRequest,
       });
     return await findById(id);
   } catch (error) {
@@ -103,7 +111,8 @@ const updateById = async (id, {
   trainingId,
   startTime,
   endTime,
-  intensity
+  intensity,
+  specialRequest,
 }) => {
   try {
     await getKnex()(tables.appointment).update({
@@ -113,6 +122,7 @@ const updateById = async (id, {
       startTime: startTime,
       endTime: endTime,
       intensity,
+      specialRequest: specialRequest,
     }).where(`${tables.appointment}.appointment_id`, id);
     return id;
   } catch (error) {
