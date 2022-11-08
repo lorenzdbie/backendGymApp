@@ -4,9 +4,9 @@ const {
 } = require('../data/index');
 const {
   getLogger
-} = require('../core/logging')
+} = require('../core/logging');
 
-const logger = getLogger();
+// const logger = getLogger();
 
 const findAll = () => {
   return getKnex()(tables.training).select().orderBy('name', 'ASC');
@@ -36,6 +36,7 @@ const create = async ({
     });
     return id;
   } catch (error) {
+    const logger = getLogger();
     logger.error('Error in create', {
       error
     });
@@ -54,6 +55,7 @@ const updateById = async (id, {
     }).where('training_id', id);
     return id;
   } catch (error) {
+    const logger = getLogger();
     logger.error('Error in updateById', {
       error
     });
@@ -66,6 +68,7 @@ const deleteById = async (id) => {
     const affectedRows = await getKnex()(tables.training).delete().where('training_id', id);
     return affectedRows > 0;
   } catch (error) {
+    const logger = getLogger();
     logger.error('Error in deleteById', {
       error
     });

@@ -1,28 +1,34 @@
-// let {
-//   APPOINTMENTS,
-//   TRAININGS
-// } = require('../data/mock_data');
-
 const appointmentRepository = require('../repository/appointment')
 const userService = require('./user')
 
 const {
   getLogger
 } = require('../core/logging');
-const logger = getLogger();
+
+
+const debugLog = (message, meta = {}) => {
+  if (!this.logger) this.logger = getLogger();
+  this.logger.debug(message, meta);
+};
+
 
 const getAll = async () => {
-  const items = await appointmentRepository.findAll();
+  debugLog('Fetching all appointments');
+  const appointments = await appointmentRepository.findAll();
   const totalCount = await appointmentRepository.findCount();
   return {
-    items,
+    appointments,
     count: totalCount,
   };
 }
 
 const getById = async (id) => {
-  id = id.replace(':', '');
+  debugLog(`Fetching appointment with id ${id}`);
   const appointment = await appointmentRepository.findById(id);
+
+  if (!appointment) {
+    throw new Error(`Appointment with id ${id} not found`);
+  }
 
   return appointment;
 }
@@ -37,9 +43,18 @@ const create = async ({
   specialRequest,
 }) => {
 
-  // const userId = await userService.register({
-  //   name: user
-  // });
+  debugLog('Creating a new appointment', {
+    date,
+    trainingId,
+    startTime,
+    endTime,
+    intensity,
+    userId,
+    specialRequest
+  });
+
+
+
   const id = await appointmentRepository.create({
     date,
     userId,
@@ -62,9 +77,15 @@ const updateById = async (id, {
   specialRequest,
 }) => {
 
-  // const userId = await userService.register({
-  //   name: user
-  // });
+  debugLog(`Updating appointment with id ${id}`, {
+    date,
+    trainingId,
+    startTime,
+    endTime,
+    intensity,
+    userId,
+    specialRequest
+  });
 
   await appointmentRepository.updateById(id, {
     date,
@@ -79,6 +100,8 @@ const updateById = async (id, {
 }
 
 const deleteById = async (id) => {
+
+  debugLog(`Deleting appointment with id ${id}`);
   await appointmentRepository.deleteById(id);
 }
 

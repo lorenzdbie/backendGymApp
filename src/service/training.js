@@ -1,19 +1,31 @@
 const trainingRepository = require('../repository/training');
 
+const {
+  getLogger
+} = require('../core/logging');
+
+const debugLog = (message, meta = {}) => {
+  if (!this.logger) this.logger = getLogger();
+  this.logger.debug(message, meta);
+};
+
 const getAll = async () => {
-  const items = await trainingRepository.findAll();
-  const totalCount = await trainingRepository.count();
+  debugLog('Fetching all trainings');
+  const trainings = await trainingRepository.findAll();
+  const count = await trainingRepository.count();
   return {
-    items,
-    count: totalCount,
+    trainings,
+    count,
   };
 }
 
 const getByName = async (name) => {
+  debugLog(`Fetching training with name ${name}`);
   return await trainingRepository.findByName(name);
 }
 
 const getById = async (id) => {
+  debugLog(`Fetching training with id ${id}`);
   const training = await trainingRepository.findById(id);
   return training;
 }
@@ -26,6 +38,7 @@ const create = async ({
     name,
     muscleGroup
   };
+  debugLog('Creating a new training', newTraining)
   const id = await trainingRepository.create(newTraining);
   return getById(id);
 }
@@ -38,12 +51,20 @@ const updateById = async (id, {
     name,
     muscleGroup
   };
+  debugLog(`Updating training with id ${id}`, updateTraining);
   await trainingRepository.updateById(id, updateTraining);
   return getById(id);
 }
 
 const deleteById = async (id) => {
-  await trainingRepository.deleteById(id);
+  debugLog(`Deleting training with id ${id}`);
+  const deletedTraining = await trainingRepository.deleteById(id);
+
+  if (!deletedTraining) {
+    throw new Error(`Training with id ${id} does not exist`, {
+      id
+    });
+  }
 }
 
 module.exports = {

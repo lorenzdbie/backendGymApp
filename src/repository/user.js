@@ -5,7 +5,7 @@ const {
   tables,
   getKnex
 } = require('../data/index');
-const logger = getLogger();
+// const logger = getLogger();
 
 const findAll = () => {
   return getKnex()(tables.user).select().orderBy('lastName', 'ASC').orderBy('firstName', 'ASC');
@@ -52,6 +52,7 @@ const create = async ({
     });
     return id;
   } catch (error) {
+    const logger = getLogger();
     logger.error('Error in create', {
       error
     });
@@ -84,6 +85,7 @@ const updateById = async (id, {
     }).where('user_id', id);
     return id;
   } catch (error) {
+    const logger = getLogger();
     logger.error('Error in updateById', {
       error
     });
@@ -96,6 +98,7 @@ const deleteById = async (id) => {
     const affectedRows = await getKnex()(tables.user).delete().where('user_id', id);
     return affectedRows > 0;
   } catch (error) {
+    const logger = getLogger();
     logger.error('Error in deleteById', {
       error
     });

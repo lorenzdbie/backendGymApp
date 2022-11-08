@@ -5,7 +5,7 @@ const {
 const {
   getLogger
 } = require('../core/logging');
-const logger = getLogger();
+// const logger = getLogger();
 
 const SELECT_COLUMNS = [
   `${tables.appointment}.appointment_id`, `${tables.appointment}.appointment_date as appointment_date`,
@@ -33,7 +33,7 @@ const formatAppointment = ({
   date: appointment_date,
   user: {
     id: user_id,
-    firstNamw: firstName,
+    firstName: firstName,
     lastName: lastName,
     email: email,
   },
@@ -98,6 +98,7 @@ const create = async ({
       });
     return await findById(id);
   } catch (error) {
+    const logger = getLogger();
     logger.error('Error in create', {
       error
     });
@@ -126,6 +127,7 @@ const updateById = async (id, {
     }).where(`${tables.appointment}.appointment_id`, id);
     return id;
   } catch (error) {
+    const logger = getLogger();
     logger.error('Error in updateById', {
       error
     });
@@ -138,6 +140,7 @@ const deleteById = async (id) => {
     const affectedRows = await getKnex()(tables.appointment).delete().where(`${tables.appointment}.appointment_id`, id);
     return affectedRows > 0;
   } catch (error) {
+    const logger = getLogger();
     logger.error('Error in deleteById', {
       error
     });
