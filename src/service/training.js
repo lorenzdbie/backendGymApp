@@ -12,7 +12,7 @@ const debugLog = (message, meta = {}) => {
 const getAll = async () => {
   debugLog('Fetching all trainings');
   const trainings = await trainingRepository.findAll();
-  const count = await trainingRepository.count();
+  const count = await trainingRepository.findCount();
   return {
     trainings,
     count,

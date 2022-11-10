@@ -31,7 +31,7 @@ const data = {
       date: new Date(2022, 11, 20),
       user_id: 1,
       training_id: 1,
-      startTime: new Date(2022, 11, 20, 08, 00, 0).getTime(),
+      startTime: new Date(2022, 11, 20, 8, 00, 0).getTime(),
       endTime: new Date(2022, 11, 20, 10, 30, 0).getTime(),
       intensity: 5,
       specialRequest: "I want to train for a championship",
