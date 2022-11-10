@@ -57,4 +57,3 @@ module.exports.initializeLogger = ({
 
   logger.info(`logger initialized with minimum log level ${level}`);
 };
-// module.exports.getLogger = () => logger;

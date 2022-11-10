@@ -3,13 +3,13 @@ const supertest = require('supertest');
 const createServer = require('../src/createServer');
 const { getKnex } = require('../src/data');
 
-/**
- * Ensure a server instance is running.
- *
- * @param {Function} setter - Setter which gives access to the supertest agent and the Knex instance
- *
- * @returns {supertest.SuperAgentTest} A supertest agent.
- */
+// /**
+//  * Ensure a server instance is running.
+//  *
+//  * @param {Function} setter - Setter which gives access to the supertest agent and the Knex instance
+//  *
+//  * @returns {supertest.SuperAgentTest} A supertest agent.
+//  */
 const withServer = (setter) => {
   let server;
 
