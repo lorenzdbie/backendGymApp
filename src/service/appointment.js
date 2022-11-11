@@ -1,9 +1,9 @@
-const appointmentRepository = require('../repository/appointment')
-const userService = require('./user')
-
+const appointmentRepository = require('../repository/appointment');
 const {
-  getLogger
+  getLogger,
 } = require('../core/logging');
+
+
 
 
 const debugLog = (message, meta = {}) => {
@@ -20,7 +20,7 @@ const getAll = async () => {
     appointments,
     count: totalCount,
   };
-}
+};
 
 const getById = async (id) => {
   debugLog(`Fetching appointment with id ${id}`);
@@ -31,26 +31,26 @@ const getById = async (id) => {
   }
 
   return appointment;
-}
+};
 
 const create = async ({
   date,
+  userId,
   trainingId,
   startTime,
   endTime,
   intensity,
-  userId,
   specialRequest,
 }) => {
 
   debugLog('Creating a new appointment', {
     date,
+    userId,
     trainingId,
     startTime,
     endTime,
     intensity,
-    userId,
-    specialRequest
+    specialRequest,
   });
 
 
@@ -65,26 +65,26 @@ const create = async ({
     specialRequest,
   });
   return getById(id);
-}
+};
 
 const updateById = async (id, {
   date,
+  userId,
   trainingId,
   startTime,
   endTime,
   intensity,
-  userId,
   specialRequest,
 }) => {
 
   debugLog(`Updating appointment with id ${id}`, {
     date,
+    userId,
     trainingId,
     startTime,
     endTime,
     intensity,
-    userId,
-    specialRequest
+    specialRequest,
   });
 
   await appointmentRepository.updateById(id, {
@@ -97,13 +97,13 @@ const updateById = async (id, {
     specialRequest,
   });
   return getById(id);
-}
+};
 
 const deleteById = async (id) => {
 
   debugLog(`Deleting appointment with id ${id}`);
   await appointmentRepository.deleteById(id);
-}
+};
 
 // const getById = (id) => {
 //   console.log(id);
@@ -165,5 +165,5 @@ module.exports = {
   getById,
   create,
   updateById,
-  deleteById
-}
+  deleteById,
+};

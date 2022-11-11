@@ -1,12 +1,12 @@
 const {
-  join
+  join,
 } = require('path');
 
 const config = require('config');
 const knex = require('knex');
 
 const {
-  getLogger
+  getLogger,
 } = require('../core/logging');
 
 const NODE_ENV = config.get('env');
@@ -80,7 +80,7 @@ async function initializeData() {
     await knexInstance.raw('SELECT 1+1 AS result');
   } catch (error) {
     logger.error(error.message, {
-      error
+      error,
     });
     throw new Error('Could not initialize the data layer');
   }

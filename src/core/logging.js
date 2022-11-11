@@ -5,7 +5,7 @@ const {
   combine,
   timestamp,
   colorize,
-  printf
+  printf,
 } = winston.format;
 
 
@@ -21,7 +21,7 @@ const loggerFormat = () => {
 
   const formatError = ({
     error: {
-      stack
+      stack,
     },
     ...rest
   }) => `${formatMessage(rest)}\n\n${stack}\n`;
@@ -43,14 +43,14 @@ module.exports.initializeLogger = ({
   level,
   disabled,
   defaultMeta = {},
-  extraTransports = []
+  extraTransports = [],
 }) => {
   logger = winston.createLogger({
     level,
     format: loggerFormat(),
     transports: [
       new winston.transports.Console({
-        silent: disabled
+        silent: disabled,
       }), ...extraTransports,
     ],
   });

@@ -1,11 +1,11 @@
 const {
-  tables
+  tables,
 } = require('..');
 
 module.exports = {
   up: async (knex) => {
     await knex.schema.createTable(tables.training, (table) => {
-      table.increments('training_id').primary();
+      table.increments('id').primary();
 
       table.string('name', 255).notNullable();
 
@@ -16,5 +16,5 @@ module.exports = {
   },
   down: (knex) => {
     return knex.schema.dropTableIfExists(tables.training);
-  }
-}
+  },
+};

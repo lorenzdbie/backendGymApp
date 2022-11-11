@@ -1,9 +1,9 @@
 const {
-  getLogger
+  getLogger,
 } = require('../core/logging');
 const {
   tables,
-  getKnex
+  getKnex,
 } = require('../data/index');
 // const logger = getLogger();
 
@@ -17,77 +17,77 @@ const findCount = async () => {
 };
 
 const findById = (id) => {
-  return getKnex()(tables.user).where('user_id', id).first();
+  return getKnex()(tables.user).where('id', id).first();
 };
 
 const findByEmailAndPassword = (({
   email,
-  password
+  password,
 }) => {
   return getKnex()(tables.user).where('email', email).where('password', password).first();
 });
 
 const create = async ({
-  user_firstName,
-  user_lastName,
+  firstName,
+  lastName,
   birthdate,
   email,
   password,
   weight,
   height,
   credits,
-  role
+  role,
 }) => {
   try {
     const [id] = await getKnex()(tables.user).insert({
-      user_firstName,
-      user_lastName,
+      firstName,
+      lastName,
       birthdate,
       email,
       password,
       weight,
       height,
       credits,
-      role
+      role,
     });
     return id;
   } catch (error) {
     const logger = getLogger();
     logger.error('Error in create', {
-      error
+      error,
     });
-    throw error
+    throw error;
   }
 };
 
 const updateById = async (id, {
-  user_firstName,
-  user_lastName,
+  firstName,
+  lastName,
   birthdate,
   email,
   password,
   weight,
   height,
   credits,
-  role
+  role,
 }) => {
   try {
     await getKnex()(tables.user).update({
-      user_firstName,
-      user_lastName,
+      firstName,
+      lastName,
       birthdate,
       email,
       password,
       weight,
       height,
       credits,
-      role
-    }).where('user_id', id);
+      role,
+    }).where('id', id);
     return id;
   } catch (error) {
     const logger = getLogger();
     logger.error('Error in updateById', {
-      error
+      error,
     });
     throw error;
   }
@@ -95,16 +95,16 @@ const updateById = async (id, {
 
 const deleteById = async (id) => {
   try {
-    const affectedRows = await getKnex()(tables.user).delete().where('user_id', id);
+    const affectedRows = await getKnex()(tables.user).delete().where('id', id);
     return affectedRows > 0;
   } catch (error) {
     const logger = getLogger();
     logger.error('Error in deleteById', {
-      error
+      error,
     });
     throw error;
   }
-}
+};
 
 module.exports = {
   findAll,
@@ -114,4 +114,4 @@ module.exports = {
   create,
   updateById,
   deleteById,
-}
+};

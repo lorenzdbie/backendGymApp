@@ -1,7 +1,6 @@
-const userRepository = require('../repository/user')
-
+const userRepository = require('../repository/user');
 const {
-  getLogger
+  getLogger,
 } = require('../core/logging');
 
 
@@ -17,84 +16,90 @@ const getAll = async () => {
   return {
     users,
     count: totalCount,
-  }
+  };
 };
 
 const register = async ({
-  user_firstName,
-  user_lastName,
+  firstName,
+  lastName,
   birthdate,
   email,
   password,
   weight,
   height,
   credits,
-  role
+  role,
 }) => {
-  debugLog('Creating a new user', {
-    user_firstName,
-    user_lastName
-  });
-  return await userRepository.create({
-    user_firstName,
-    user_lastName,
+
+  const newUser = {
+    firstName,
+    lastName,
     birthdate,
     email,
     password,
     weight,
     height,
     credits,
-    role
-  })
-}
+    role,
+  };
+
+  debugLog('Creating a new user', {
+    firstName,
+    lastName,
+  });
+  const id = await userRepository.create(newUser);
+  return getById(id);
+};
+
 
 const login = async ({
   email,
-  password
+  password,
 }) => {
   debugLog('Logging in user', {
-    email
+    email,
   });
   const user = await userRepository.findByEmailAndPassword({
     email,
-    password
+    password,
   });
   return user;
-}
+};
 
 const getById = async (id) => {
   debugLog(`Fetching user with id ${id}`);
   const user = await userRepository.findById(id);
   return user;
-}
+};
 
 const updateById = async (id, {
-  user_firstName,
-  user_lastName,
+  firstName,
+  lastName,
   birthdate,
   email,
   password,
   weight,
   height,
   credits,
-  role
+  role,
 }) => {
   debugLog(`Updating user with id ${id}`, {
-    user_firstName,
-    user_lastName
+    firstName,
+    lastName,
   });
-  return await userRepository.updateById(id, {
-    user_firstName,
-    user_lastName,
+  await userRepository.updateById(id, {
+    firstName,
+    lastName,
     birthdate,
     email,
     password,
     weight,
     height,
     credits,
-    role
+    role,
   });
-}
+  return getById(id);
+};
 
 const deleteById = async (id) => {
   debugLog(`Deleting user with id ${id}`);
@@ -102,10 +107,10 @@ const deleteById = async (id) => {
 
   if (!deleted) {
     throw new Error(`User with id ${id} doesn't exist`, {
-      id
+      id,
     });
   }
-}
+};
 
 module.exports = {
   getAll,
@@ -114,4 +119,4 @@ module.exports = {
   getById,
   updateById,
   deleteById,
-}
+};

@@ -1,9 +1,5 @@
 const Koa = require('koa');
 const config = require('config');
-const {
-  initializeLogger,
-  getLogger
-} = require('./core/logging');
 const bodyParser = require('koa-bodyparser');
 const koaCors = require('@koa/cors');
 // const ServiceError = require('./core/serviceError');
@@ -11,11 +7,22 @@ const koaCors = require('@koa/cors');
 // const {
 //   serializeError
 // } = require('serialize-error');
+const swaggerJSDoc = require('swagger-jsdoc');
+const {
+  koaSwagger,
+} = require('koa2-swagger-ui');
+
+const swaggerOptions = require('../swagger.config');
+
+const installRest = require('./rest');
 const {
   initializeData,
-  shutdownData
+  shutdownData,
 } = require('./data');
-const installRest = require('./rest');
+const {
+  initializeLogger,
+  getLogger,
+} = require('./core/logging');
 
 const NODE_ENV = config.get('env');
 const CORS_ORIGINS = config.get('cors.origins');
@@ -31,7 +38,7 @@ module.exports = async function createServer() {
     level: LOG_LEVEL,
     disabled: LOG_DISABLED,
     defaultMeta: {
-      NODE_ENV
+      NODE_ENV,
     },
   });
 
@@ -53,6 +60,18 @@ module.exports = async function createServer() {
   const logger = getLogger();
 
   app.use(bodyParser());
+
+  const spec = swaggerJSDoc(swaggerOptions);
+  app.use(koaSwagger({
+    routePrefix: '/swagger',
+    specPrefix: '/swagger/spec',
+    exposeSpec: true,
+    swaggerOptions: {
+      spec,
+    },
+  }) );
+
+
 
   // app.use(async (ctx, next) => {
 

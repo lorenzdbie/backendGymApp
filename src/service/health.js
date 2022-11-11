@@ -2,7 +2,7 @@ const packageJson = require('../../package.json');
 
 
 const ping = () => ({
-  pong: true
+  pong: true,
 });
 
 

@@ -12,7 +12,8 @@
   "scripts": {
     "start": "npx env-cmd nodemon",
     "test": "npx env-cmd -f .env.test jest",
-    "test:coverage": "npx env-cmd -f .env.test jest --coverage" 
+    "test:coverage": "npx env-cmd -f .env.test jest --coverage",
+    "lint": "npx eslint . --fix"
   },
   "nodemonConfig": {
     "signal": "SIGTERM",
@@ -40,14 +41,17 @@
     "knex": "^2.3.0",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
+    "koa2-swagger-ui": "^5.6.0",
     "mysql2": "^2.3.3",
     "node-emoji": "^1.11.0",
     "serialize-error": "^11.0.0",
     "supertest": "^6.3.1",
+    "swagger-jsdoc": "^6.2.5",
     "winston": "^3.8.2"
   },
   "devDependencies": {
-    
+    "eslint": "^8.27.0",
+    "eslint-plugin-import": "^2.26.0",
     "nodemon": "^2.0.20"
   }
 }

@@ -1,7 +1,6 @@
 const trainingRepository = require('../repository/training');
-
 const {
-  getLogger
+  getLogger,
 } = require('../core/logging');
 
 const debugLog = (message, meta = {}) => {
@@ -17,44 +16,39 @@ const getAll = async () => {
     trainings,
     count,
   };
-}
-
-const getByName = async (name) => {
-  debugLog(`Fetching training with name ${name}`);
-  return await trainingRepository.findByName(name);
-}
+};
 
 const getById = async (id) => {
   debugLog(`Fetching training with id ${id}`);
   const training = await trainingRepository.findById(id);
   return training;
-}
+};
 
 const create = async ({
   name,
-  muscleGroup
+  muscleGroup,
 }) => {
   const newTraining = {
     name,
-    muscleGroup
+    muscleGroup,
   };
-  debugLog('Creating a new training', newTraining)
+  debugLog('Creating a new training', newTraining);
   const id = await trainingRepository.create(newTraining);
   return getById(id);
-}
+};
 
 const updateById = async (id, {
   name,
-  muscleGroup
+  muscleGroup,
 }) => {
   const updateTraining = {
     name,
-    muscleGroup
+    muscleGroup,
   };
   debugLog(`Updating training with id ${id}`, updateTraining);
   await trainingRepository.updateById(id, updateTraining);
   return getById(id);
-}
+};
 
 const deleteById = async (id) => {
   debugLog(`Deleting training with id ${id}`);
@@ -62,16 +56,15 @@ const deleteById = async (id) => {
 
   if (!deletedTraining) {
     throw new Error(`Training with id ${id} does not exist`, {
-      id
+      id,
     });
   }
-}
+};
 
 module.exports = {
   getAll,
-  getByName,
   getById,
   create,
   updateById,
-  deleteById
-}
+  deleteById,
+};
