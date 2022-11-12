@@ -2,6 +2,9 @@ const Router = require('@koa/router');
 
 // const swaggerConfig = require('../../swagger.config');
 const appointmentService = require('../service/appointment');
+// const {requireAuthentications, makeRequireRole} = require('../core/auth');
+// const Role = require('../core/roles');
+
 // /**
 //  * @swagger
 //  *tags:
@@ -74,11 +77,20 @@ module.exports = (app) => {
     prefix: '/appointments',
   });
 
+  // const requireAdmin = makeRequireRole(Role.ADMIN);
+
+  // router.get('/', requireAuthentications, requireAdmin , getAllAppointments);
+  // router.get('/:id', requireAuthentications, getAppointmentById);
+  // router.post('/', requireAuthentications, createAppointment);
+  // router.put('/:id', requireAuthentications, updateAppointment);
+  // router.delete('/:id', requireAuthentications, deleteAppointment);
+
   router.get('/', getAllAppointments);
   router.get('/:id', getAppointmentById);
   router.post('/', createAppointment);
   router.put('/:id', updateAppointment);
   router.delete('/:id', deleteAppointment);
+
 
   app.use(router.routes()).use(router.allowedMethods());
 

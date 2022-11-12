@@ -1,6 +1,8 @@
 const Router = require('@koa/router');
 
 const trainingService = require('../service/training');
+// const {requireAuthentications, makeRequireRole} = require('../core/auth');
+// const Role = require('../core/roles');
 
 const getAllTrainings = async (ctx) => {
   ctx.body = await trainingService.getAll();
@@ -31,6 +33,14 @@ module.exports = (app) => {
   const router = new Router({
     prefix: '/trainings',
   });
+
+  // const requireAdmin = makeRequireRole(Role.ADMIN);
+
+  // router.get('/', requireAuthentications, getAllTrainings);
+  // router.get('/:id', requireAuthentications, getTrainingById);
+  // router.post('/', requireAuthentications, requireAdmin, createTraining);
+  // router.put('/:id', requireAuthentications, requireAdmin, updateTrainingById);
+  // router.delete('/:id', requireAuthentications, requireAdmin, deleteTrainingById);
 
   router.get('/', getAllTrainings);
   router.get('/:id', getTrainingById);

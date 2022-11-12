@@ -10,15 +10,15 @@ module.exports = {
       table.string('firstName', 255).notNullable();
       table.string('lastName', 255).notNullable();
       table.dateTime('birthdate').notNullable();
-      table.string('email', 255).notNullable();
-      table.string('password', 255).notNullable();
+      table.string('email').notNullable();
+      table.string('password_hash').notNullable();
       table.float('weight');
       table.float('height');
       table.integer('credits');
-      table.string('role').notNullable();
+      table.jsonb('roles').notNullable();
 
 
-      table.unique('email', 'idx_email_unique');
+      table.unique('email', 'idx_user_email_unique');
     });
   },
   down: (knex) => {

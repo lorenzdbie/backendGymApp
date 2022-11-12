@@ -1,6 +1,10 @@
 const Router = require('@koa/router');
 
 const userService = require('../service/user');
+// const {requireAuthentications, makeRequireRole} = require('../core/auth');
+// const Role = require('../core/roles');
+
+
 
 const getAllUsers = async (ctx) => {
   const users = await userService.getAll();
@@ -13,18 +17,22 @@ const getUserById = async (ctx) => {
 };
 
 const register = async (ctx) => {
-  const newUser = await userService.register({
+  const session = await userService.register({
     ...ctx.request.body,
     birthdate: new Date(ctx.request.body.birthdate),
   });
-  ctx.body = newUser;
+  ctx.body = session;
   ctx.status = 201;
 
 };
 
 const login = async (ctx) => {
-  const user = userService.login(ctx.params.email, ctx.params.password);
-  ctx.body = user;
+  const {
+    email,
+    password,
+  } = ctx.request.body;
+  const session = await userService.login(email, password);
+  ctx.body = session;
 };
 
 
@@ -46,22 +54,21 @@ module.exports = function installUserRouter(app) {
     prefix: '/users',
   });
 
-  userRouter.get('/', getAllUsers);
-  userRouter.get('/:id', getUserById);
-  userRouter.post('/', register);
+  userRouter.post('/register', register);
   userRouter.post('/login', login);
+
+  // const requireAdmin = makeRequireRole(Role.ADMIN);
+
+  // userRouter.get('/',requireAuthentications, requireAdmin ,getAllUsers);
+  // userRouter.get('/:id', requireAuthentications, getUserById);
+  // userRouter.put('/:id', requireAuthentications, updateUserById);
+  // userRouter.delete('/:id', requireAuthentications, deleteUserById);
+
+  userRouter.get('/',getAllUsers);
+  userRouter.get('/:id', getUserById);
   userRouter.put('/:id', updateUserById);
   userRouter.delete('/:id', deleteUserById);
 
   app.use(userRouter.routes())
     .use(userRouter.allowedMethods());
 };
-
-// module.exports = {
-//   getAllUsers,
-//   getUserById,
-//   register,
-//   login,
-//   updateUserById,
-//   deleteUserById,
-// }

@@ -47,6 +47,7 @@ module.exports.initializeLogger = ({
 }) => {
   logger = winston.createLogger({
     level,
+    defaultMeta,
     format: loggerFormat(),
     transports: [
       new winston.transports.Console({
