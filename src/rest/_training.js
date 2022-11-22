@@ -20,7 +20,7 @@ const createTraining = async (ctx) => {
 };
 
 const updateTrainingById = async (ctx) => {
-  ctx.body = await trainingService.updateById(ctx.params.id, ctx.request.body);
+  ctx.body = await trainingService.updateById(ctx.params.id, {...ctx.request.body});
 };
 
 const deleteTrainingById = async (ctx) => {

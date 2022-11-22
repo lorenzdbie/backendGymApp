@@ -59,9 +59,11 @@ const createAppointment = async (ctx) => {
 const updateAppointment = async (ctx) => {
   ctx.body = await appointmentService.updateById(ctx.params.id, {
     ...ctx.request.body,
+    userId: Number(ctx.request.body.userId),
     date: new Date(ctx.request.body.date),
     startTime: new Date(ctx.request.body.startTime),
     endTime: new Date(ctx.request.body.endTime),
+    trainingId: Number(ctx.request.body.trainingId),
   });
 };
 

@@ -1,4 +1,5 @@
 module.exports = {
+  port: 9000,
   log: {
     level: 'info',
     disabled: false,
@@ -9,11 +10,11 @@ module.exports = {
   },
   database: {
     client: 'mysql2',
-    host: 'localhost',
-    port: 3306,
-    name: 'fitnessapp',
-    username: 'root',
-    password: 'root-root',
+    host: 'vichogent.be',
+    port: 40043,
+    name: '702547ld',
+    username: '702547ld',
+    password: 'nEO2l9MSWZoij3qloyHl',
   },
   auth: {
     argon: {

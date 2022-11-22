@@ -1,11 +1,11 @@
 module.exports = {
   env: 'NODE_ENV',
+  port:'PORT',
   database: {
-    client: 'mysql2',
-    host: 'localhost',
-    port: '3306',
-    name: 'fitnessapp',
-    username: 'root',
-    password: 'root-root',
+    client: 'DATABASE_HOST',
+    host: 'DATABASE_PORT',
+    name: 'DATABASE_NAME',
+    username: 'DATABASE_USERNAME',
+    password: 'DATABASE_PASSWORD',
   },
 };
