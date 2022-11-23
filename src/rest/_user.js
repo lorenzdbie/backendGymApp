@@ -1,19 +1,31 @@
 const Router = require('@koa/router');
+const Joi = require('joi');
 
 const userService = require('../service/user');
 // const {requireAuthentications, makeRequireRole} = require('../core/auth');
 // const Role = require('../core/roles');
 
-
+const validate = require('./_validation');
 
 const getAllUsers = async (ctx) => {
   const users = await userService.getAll();
   ctx.body = users;
 };
+getAllUsers.validationScheme = {
+  query: Joi.object({
+    limit: Joi.number().integer().positive().max(1000).optional(),
+    offset: Joi.number().min(0).optional(),
+  }).and('limit', 'offset'),
+};
 
 const getUserById = async (ctx) => {
   const user = await userService.getById(Number(ctx.params.id));
   ctx.body = user;
+};
+getUserById.validationScheme = {
+  params: {
+    id: Joi.number().integer().positive().required(),
+  },
 };
 
 const register = async (ctx) => {
@@ -23,7 +35,19 @@ const register = async (ctx) => {
   });
   ctx.body = session;
   ctx.status = 201;
-
+};
+register.validationScheme = {
+  body: {
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
+    birthdate: Joi.date().required(),
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+    weight: Joi.number().positive().optional(),
+    height: Joi.number().positive().optional(),
+    credits: Joi.number().positive().optional(),
+    role: Joi.string().optional(),
+  },
 };
 
 const login = async (ctx) => {
@@ -34,6 +58,12 @@ const login = async (ctx) => {
   const session = await userService.login(email, password);
   ctx.body = session;
 };
+login.validationScheme = {
+  body: {
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+  },
+};
 
 
 const updateUserById = async (ctx) => {
@@ -42,11 +72,32 @@ const updateUserById = async (ctx) => {
     birthdate: new Date(ctx.request.body.birthdate),
   });
 };
+updateUserById.validationScheme = {
+  params: {
+    id: Joi.number().integer().positive().required(),
+  },
+  body: {
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
+    birthdate: Joi.date().required(),
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+    weight: Joi.number().positive().optional(),
+    height: Joi.number().positive().optional(),
+    credits: Joi.number().positive().optional(),
+    role: Joi.string().optional(),
+  },
+};
 
 
 const deleteUserById = async (ctx) => {
   await userService.deleteById(ctx.params.id);
   ctx.status = 204;
+};
+deleteUserById.validationScheme = {
+  params: {
+    id: Joi.number().integer().positive().required(),
+  },
 };
 
 module.exports = function installUserRouter(app) {
@@ -54,8 +105,8 @@ module.exports = function installUserRouter(app) {
     prefix: '/users',
   });
 
-  userRouter.post('/register', register);
-  userRouter.post('/login', login);
+  userRouter.post('/register', validate(register.validationScheme), register);
+  userRouter.post('/login', validate(login.validationScheme), login);
 
   // const requireAdmin = makeRequireRole(Role.ADMIN);
 
@@ -64,10 +115,10 @@ module.exports = function installUserRouter(app) {
   // userRouter.put('/:id', requireAuthentications, updateUserById);
   // userRouter.delete('/:id', requireAuthentications, deleteUserById);
 
-  userRouter.get('/',getAllUsers);
-  userRouter.get('/:id', getUserById);
-  userRouter.put('/:id', updateUserById);
-  userRouter.delete('/:id', deleteUserById);
+  userRouter.get('/', validate(getAllUsers.validationScheme), getAllUsers);
+  userRouter.get('/:id', validate(getUserById.validationScheme), getUserById);
+  userRouter.put('/:id', validate(updateUserById.validationScheme), updateUserById);
+  userRouter.delete('/:id', validate(deleteUserById.validationScheme), deleteUserById);
 
   app.use(userRouter.routes())
     .use(userRouter.allowedMethods());

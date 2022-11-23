@@ -1,9 +1,12 @@
 const Router = require('@koa/router');
+const Joi = require('joi');
 
 // const swaggerConfig = require('../../swagger.config');
 const appointmentService = require('../service/appointment');
 // const {requireAuthentications, makeRequireRole} = require('../core/auth');
 // const Role = require('../core/roles');
+
+const validate = require('./_validation');
 
 // /**
 //  * @swagger
@@ -32,15 +35,26 @@ const appointmentService = require('../service/appointment');
 //  * 
 //  */
 const getAllAppointments = async (ctx) => {
-  ctx.body = await appointmentService.getAll();
+  const limit = ctx.query.limit && Number(ctx.query.limit);
+  const offset = ctx.query.offset && Number(ctx.query.offset);
+  ctx.body = await appointmentService.getAll(limit, offset);
 };
-
+getAllAppointments.validationScheme = {
+  query: Joi.object({
+    limit: Joi.number().integer().positive().max(1000).optional(),
+    offset: Joi.number().min(0).optional(),
+  }).and('limit', 'offset'),
+};
 
 
 const getAppointmentById = async (ctx) => {
   ctx.body = await appointmentService.getById(ctx.params.id);
 };
-
+getAppointmentById.validationScheme = {
+  params: {
+    id: Joi.number().integer().positive().required(),
+  },
+};
 
 
 const createAppointment = async (ctx) => {
@@ -53,7 +67,18 @@ const createAppointment = async (ctx) => {
   ctx.body = newAppointment;
   ctx.status = 201;
 };
+createAppointment.validationScheme = {
+  body: {
+    date: Joi.date().required().iso().min('now'),
+    userId: Joi.number().integer().positive().required(),
+    trainingId: Joi.number().integer().positive().required(),
+    startTime: Joi.date().required().iso().min('now'),
+    endTime: Joi.date().required().iso().min('now'),
+    intensity: Joi.number().integer().min(0).max(5).required(),
+    specialRequest: Joi.string().optional(),
 
+  },
+};
 
 
 const updateAppointment = async (ctx) => {
@@ -66,13 +91,32 @@ const updateAppointment = async (ctx) => {
     trainingId: Number(ctx.request.body.trainingId),
   });
 };
-
+updateAppointment.validationScheme = {
+  params: {
+    id: Joi.number().integer().positive().required(),
+  },
+  body: {
+    date: Joi.date().required().iso().min('now'),
+    userId: Joi.number().integer().positive().required(),
+    trainingId: Joi.number().integer().positive().required(),
+    startTime: Joi.date().required().iso().min('now'),
+    endTime: Joi.date().required().iso().min('now'),
+    intensity: Joi.number().integer().min(0).max(5).required(),
+    specialRequest: Joi.string().optional(),
+  },
+};
 
 
 const deleteAppointment = async (ctx) => {
   await appointmentService.deleteById(Number(ctx.params.id));
   ctx.status = 204;
 };
+deleteAppointment.validationScheme = {
+  params: {
+    id: Joi.number().integer().positive().required(),
+  },
+};
+
 
 module.exports = (app) => {
   const router = new Router({
@@ -87,11 +131,11 @@ module.exports = (app) => {
   // router.put('/:id', requireAuthentications, updateAppointment);
   // router.delete('/:id', requireAuthentications, deleteAppointment);
 
-  router.get('/', getAllAppointments);
-  router.get('/:id', getAppointmentById);
-  router.post('/', createAppointment);
-  router.put('/:id', updateAppointment);
-  router.delete('/:id', deleteAppointment);
+  router.get('/', validate(getAllAppointments.validationScheme), getAllAppointments);
+  router.get('/:id', validate(getAppointmentById.validationScheme), getAppointmentById);
+  router.post('/', validate(createAppointment.validationScheme), createAppointment);
+  router.put('/:id', validate(updateAppointment.validationScheme), updateAppointment);
+  router.delete('/:id', validate(deleteAppointment.validationScheme), deleteAppointment);
 
 
   app.use(router.routes()).use(router.allowedMethods());
