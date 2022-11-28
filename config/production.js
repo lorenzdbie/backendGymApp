@@ -5,7 +5,7 @@ module.exports = {
     disabled: false,
   },
   cors: {
-    origins: ['http://localhost:3000'],
+    origins: ['http://localhost:5173'],
     maxAge: 3 * 60 * 60,
   },
   database: {
@@ -15,13 +15,5 @@ module.exports = {
     name: '702547ld',
     username: '702547ld',
     password: 'nEO2l9MSWZoij3qloyHl',
-  },
-  auth: {
-    argon: {
-      saltLength: 16,
-      hashLength: 32,
-      timeCost: 6,
-      memoryCost: 2 ** 17,
-    },
   },
 };

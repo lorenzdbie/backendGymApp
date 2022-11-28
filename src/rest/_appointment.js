@@ -3,8 +3,7 @@ const Joi = require('joi');
 
 // const swaggerConfig = require('../../swagger.config');
 const appointmentService = require('../service/appointment');
-// const {requireAuthentications, makeRequireRole} = require('../core/auth');
-// const Role = require('../core/roles');
+
 
 const validate = require('./_validation');
 
@@ -122,14 +121,6 @@ module.exports = (app) => {
   const router = new Router({
     prefix: '/appointments',
   });
-
-  // const requireAdmin = makeRequireRole(Role.ADMIN);
-
-  // router.get('/', requireAuthentications, requireAdmin , getAllAppointments);
-  // router.get('/:id', requireAuthentications, getAppointmentById);
-  // router.post('/', requireAuthentications, createAppointment);
-  // router.put('/:id', requireAuthentications, updateAppointment);
-  // router.delete('/:id', requireAuthentications, deleteAppointment);
 
   router.get('/', validate(getAllAppointments.validationScheme), getAllAppointments);
   router.get('/:id', validate(getAppointmentById.validationScheme), getAppointmentById);

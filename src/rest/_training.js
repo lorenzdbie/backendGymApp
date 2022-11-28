@@ -2,8 +2,6 @@ const Router = require('@koa/router');
 const Joi = require('joi');
 
 const trainingService = require('../service/training');
-// const {requireAuthentications, makeRequireRole} = require('../core/auth');
-// const Role = require('../core/roles');
 
 const validate = require('./_validation');
 
@@ -73,13 +71,6 @@ module.exports = (app) => {
     prefix: '/trainings',
   });
 
-  // const requireAdmin = makeRequireRole(Role.ADMIN);
-
-  // router.get('/', requireAuthentications, getAllTrainings);
-  // router.get('/:id', requireAuthentications, getTrainingById);
-  // router.post('/', requireAuthentications, requireAdmin, createTraining);
-  // router.put('/:id', requireAuthentications, requireAdmin, updateTrainingById);
-  // router.delete('/:id', requireAuthentications, requireAdmin, deleteTrainingById);
 
   router.get('/', validate(getAllTrainings.validationScheme), getAllTrainings);
   router.get('/:id', validate(getTrainingById.validationScheme), getTrainingById);

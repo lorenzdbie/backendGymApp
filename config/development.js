@@ -16,18 +16,4 @@ module.exports = {
     username: '702547ld',
     password: 'nEO2l9MSWZoij3qloyHl',
   },
-  auth: {
-    argon: {
-      saltLength: 16,
-      hashLength: 32,
-      timeCost: 6,
-      memoryCost: 2 ** 17,
-    },
-    jwt: {
-      secret: 'eenveeltemoeilijksecretdatniemandooitzalradenandersisdesitegehacked',
-      expirationInterval: 60 * 60 * 1000,
-      issuer: 'fittnes.app.be',
-      audience: 'fittnes.app.be',
-    },
-  },
 };

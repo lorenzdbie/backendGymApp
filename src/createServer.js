@@ -1,4 +1,3 @@
-
 const Koa = require('koa');
 const config = require('config');
 const bodyParser = require('koa-bodyparser');
@@ -24,12 +23,20 @@ const {
   initializeLogger,
   getLogger,
 } = require('./core/logging');
+const {
+  checkJwtToken,
+} = require('./core/auth');
+
+
+
+
 
 const NODE_ENV = config.get('env');
 const CORS_ORIGINS = config.get('cors.origins');
 const CORS_MAX_AGE = config.get('cors.maxAge');
 const LOG_LEVEL = config.get('log.level');
 const LOG_DISABLED = config.get('log.disabled');
+
 
 console.log(`log level ${LOG_LEVEL}, logs enabled: ${LOG_DISABLED !== true}`);
 
@@ -60,6 +67,10 @@ module.exports = async function createServer() {
 
   const logger = getLogger();
 
+  app.use(checkJwtToken());
+
+
+
   app.use(bodyParser());
 
   const spec = swaggerJSDoc(swaggerOptions);
@@ -75,6 +86,8 @@ module.exports = async function createServer() {
 
 
   app.use(async (ctx, next) => {
+
+    console.log(ctx.state.user);
 
     const logger = getLogger();
     logger.info(`${emoji.get('fast_forward')} ${ctx.method} ${ctx.url}`);

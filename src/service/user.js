@@ -2,15 +2,7 @@ const userRepository = require('../repository/user');
 const {
   getLogger,
 } = require('../core/logging');
-const {
-  hashPassword,
-  verifyPassword,
-} = require('../core/password');
-const Role = require('../core/roles');
-const {
-  generateJWT,
-  verifyJWT,
-} = require('../core/jwt');
+const serviceError = require('../core/serviceError');
 
 
 const debugLog = (message, meta = {}) => {
@@ -19,95 +11,27 @@ const debugLog = (message, meta = {}) => {
 };
 
 
-const checkAndParseSession = async (authHeader) => {
-  if (!authHeader) {
-    throw new Error('you need to be signed in');
-  }
-
-  if (!authHeader.startsWith('Bearer ')) {
-    throw new Error('Invalid authorization token');
-  }
-
-  const authToken = authHeader.substr(7);
-
-  try {
-    const {
-      UserId,
-      roles,
-    } = await verifyJWT(authToken);
-
-    return {
-      UserId,
-      roles,
-      authToken,
-    };
-
-  } catch (error) {
-    const logger = getLogger('user-service');
-    logger.error(error.message, {
-      error,
-    });
-    throw new Error(error.message);
-  }
-};
-
-const checkRole = (role, roles) => {
-  const hasPermission = roles.includes(role);
-
-  if (!hasPermission) {
-    throw new Error('You do not have permission to visit this part of the application');
-  }
-};
-
-
-
-const makeExposedUser = ({
-  id,
-  firstName,
-  lastName,
-  email,
-  roles,
-}) => ({
-  id,
-  firstName,
-  lastName,
-  email,
-  roles,
-});
-
-
-const makeLoginData = async (user) => {
-  const token = await generateJWT(user);
-  return {
-    user: makeExposedUser(user),
-    token,
-  };
-};
-
-
 const register = async ({
   firstName,
   lastName,
   birthdate,
   email,
-  password,
   weight,
   height,
-  credits,
+  credits = 3,
+  auth0id,
 }) => {
 
-  const passwordHash = await hashPassword(password);
 
   const newUser = {
     firstName,
     lastName,
     birthdate,
     email,
-    passwordHash,
     weight,
     height,
     credits,
-    roles: [Role.USER],
+    auth0id,
   };
 
   debugLog('Creating a new user', {
@@ -115,31 +39,20 @@ const register = async ({
     lastName,
   });
   const user = await userRepository.create(newUser);
-  return await makeLoginData(user);
+  return user;
 };
 
+const getByAuth0id = async (auth0id) => {
+  debugLog(`Fetching user with auth0id ${auth0id}`);
+  const user = await userRepository.findByAuth0id(auth0id);
 
-const login = async ({
-  email,
-  password,
-}) => {
-  debugLog('Logging in user', {
-    email,
-  });
-
-  const user = await userRepository.findByEmail(email);
   if (!user) {
-    throw new Error('The given email and password do not match');
+    throw serviceError.notFound(`No user with id ${auth0id} exists`, {
+      auth0id,
+    });
   }
-
-  const passwordValid = await verifyPassword(password, user.password_hash);
-  if (!passwordValid) {
-    throw new Error('The given email and password do not match');
-  }
-
-  return await makeLoginData(user);
+  return user;
 };
-
 
 
 const getAll = async () => {
@@ -202,11 +115,9 @@ const deleteById = async (id) => {
 
 
 module.exports = {
-  checkAndParseSession,
-  checkRole,
   getAll,
   register,
-  login,
+  getByAuth0id,
   getById,
   updateById,
   deleteById,

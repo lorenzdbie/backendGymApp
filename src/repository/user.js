@@ -5,7 +5,6 @@ const {
   tables,
   getKnex,
 } = require('../data/index');
-// const logger = getLogger();
 
 const findAll = () => {
   return getKnex()(tables.user).select().orderBy('lastName', 'ASC').orderBy('firstName', 'ASC');
@@ -16,31 +15,35 @@ const findCount = async () => {
   return count['count(*)'];
 };
 
+const findByAuth0id = (auth0id) => {
+  return getKnex()(tables.user)
+    .where('auth0id', auth0id)
+    .first();
+};
+
 const findById = (id) => {
   return getKnex()(tables.user).where('id', id).first();
 };
 
-const findByEmailAndPassword = async({
-  email,
-  passwordHash,
-}) => {
-  return await getKnex()(tables.user).where('email', email).where('password_hash',passwordHash).first();
-};
+// const findByEmailAndPassword = async({
+//   email,
+//   passwordHash,
+// }) => {
+//   return await getKnex()(tables.user).where('email', email).where('password_hash',passwordHash).first();
+// };
 
-const findByEmail = async (email) => {
-  return await getKnex()(tables.user).where('email', email).first();
-};
+// const findByEmail = async (email) => {
+//   return await getKnex()(tables.user).where('email', email).first();
+// };
 
 const create = async ({
   firstName,
   lastName,
   birthdate,
   email,
-  passwordHash,
   weight,
   height,
   credits,
-  roles,
 }) => {
   try {
     const [id] = await getKnex()(tables.user).insert({
@@ -48,11 +51,9 @@ const create = async ({
       lastName,
       birthdate,
       email,
-      password_hash: passwordHash,
       weight,
       height,
       credits,
-      roles: JSON.stringify(roles),
     });
     return id;
   } catch (error) {
@@ -69,11 +70,9 @@ const updateById = async (id, {
   lastName,
   birthdate,
   email,
-  passwordHash,
   weight,
   height,
   credits,
-  roles,
 }) => {
   try {
     await getKnex()(tables.user).update({
@@ -81,11 +80,9 @@ const updateById = async (id, {
       lastName,
       birthdate,
       email,
-      password_hash: passwordHash,
       weight,
       height,
       credits,
-      roles: JSON.stringify(roles),
     }).where('id', id);
     return id;
   } catch (error) {
@@ -113,9 +110,10 @@ const deleteById = async (id) => {
 module.exports = {
   findAll,
   findCount,
+  findByAuth0id,
   findById,
-  findByEmailAndPassword,
-  findByEmail,
+  // findByEmailAndPassword,
+  // findByEmail,
   create,
   updateById,
   deleteById,

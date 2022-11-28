@@ -11,11 +11,10 @@ module.exports = {
       table.string('lastName', 255).notNullable();
       table.dateTime('birthdate').notNullable();
       table.string('email').notNullable();
-      table.string('password_hash').notNullable();
       table.float('weight');
       table.float('height');
       table.integer('credits');
-      table.jsonb('roles').notNullable();
+      table.string('auth0id', 255).notNullable();
 
 
       table.unique('email', 'idx_user_email_unique');

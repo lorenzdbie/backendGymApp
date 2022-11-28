@@ -2,10 +2,17 @@ const Router = require('@koa/router');
 const Joi = require('joi');
 
 const userService = require('../service/user');
-// const {requireAuthentications, makeRequireRole} = require('../core/auth');
-// const Role = require('../core/roles');
 
 const validate = require('./_validation');
+
+
+
+
+
+
+
+
+
 
 const getAllUsers = async (ctx) => {
   const users = await userService.getAll();
@@ -28,42 +35,42 @@ getUserById.validationScheme = {
   },
 };
 
-const register = async (ctx) => {
-  const session = await userService.register({
-    ...ctx.request.body,
-    birthdate: new Date(ctx.request.body.birthdate),
-  });
-  ctx.body = session;
-  ctx.status = 201;
-};
-register.validationScheme = {
-  body: {
-    firstName: Joi.string().required(),
-    lastName: Joi.string().required(),
-    birthdate: Joi.date().required(),
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
-    weight: Joi.number().positive().optional(),
-    height: Joi.number().positive().optional(),
-    credits: Joi.number().positive().optional(),
-    role: Joi.string().optional(),
-  },
-};
+// const register = async (ctx) => {
+//   const session = await userService.register({
+//     ...ctx.request.body,
+//     birthdate: new Date(ctx.request.body.birthdate),
+//   });
+//   ctx.body = session;
+//   ctx.status = 201;
+// };
+// register.validationScheme = {
+//   body: {
+//     firstName: Joi.string().required(),
+//     lastName: Joi.string().required(),
+//     birthdate: Joi.date().required(),
+//     email: Joi.string().email().required(),
+//     password: Joi.string().required(),
+//     weight: Joi.number().positive().optional(),
+//     height: Joi.number().positive().optional(),
+//     credits: Joi.number().positive().optional(),
+//     role: Joi.string().optional(),
+//   },
+// };
 
-const login = async (ctx) => {
-  const {
-    email,
-    password,
-  } = ctx.request.body;
-  const session = await userService.login(email, password);
-  ctx.body = session;
-};
-login.validationScheme = {
-  body: {
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
-  },
-};
+// const login = async (ctx) => {
+//   const {
+//     email,
+//     password,
+//   } = ctx.request.body;
+//   const session = await userService.login(email, password);
+//   ctx.body = session;
+// };
+// login.validationScheme = {
+//   body: {
+//     email: Joi.string().email().required(),
+//     password: Joi.string().required(),
+//   },
+// };
 
 
 const updateUserById = async (ctx) => {
@@ -105,15 +112,8 @@ module.exports = function installUserRouter(app) {
     prefix: '/users',
   });
 
-  userRouter.post('/register', validate(register.validationScheme), register);
-  userRouter.post('/login', validate(login.validationScheme), login);
-
-  // const requireAdmin = makeRequireRole(Role.ADMIN);
-
-  // userRouter.get('/',requireAuthentications, requireAdmin ,getAllUsers);
-  // userRouter.get('/:id', requireAuthentications, getUserById);
-  // userRouter.put('/:id', requireAuthentications, updateUserById);
-  // userRouter.delete('/:id', requireAuthentications, deleteUserById);
+  // userRouter.post('/register', validate(register.validationScheme), register);
+  // userRouter.post('/login', validate(login.validationScheme), login);
 
   userRouter.get('/', validate(getAllUsers.validationScheme), getAllUsers);
   userRouter.get('/:id', validate(getUserById.validationScheme), getUserById);
