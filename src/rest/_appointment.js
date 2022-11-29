@@ -1,8 +1,17 @@
 const Router = require('@koa/router');
 const Joi = require('joi');
 
+
+
 // const swaggerConfig = require('../../swagger.config');
+
 const appointmentService = require('../service/appointment');
+const userService = require('../service/user');
+const {
+  hasPermission,
+  permissions,
+  addUserInfo,
+} = require('../core/auth');
 
 
 const validate = require('./_validation');
@@ -46,6 +55,22 @@ getAllAppointments.validationScheme = {
 };
 
 
+const getAllAppointmentsForUser = async (ctx) => {
+  let userId = 0;
+  const user = await userService.getByAuth0id(ctx.state.user.sub);
+  userId = user.id;
+  const appointments = await appointmentService.getAllAppointmentforUser(userId);
+  console.log({...appointments});
+  ctx.body = appointments;
+};
+getAllAppointmentsForUser.validationScheme = {
+  query: Joi.object({
+    limit: Joi.number().integer().positive().max(1000).optional(),
+    offset: Joi.number().min(0).optional(),
+  }).and('limit', 'offset'),
+};
+
+
 const getAppointmentById = async (ctx) => {
   ctx.body = await appointmentService.getById(ctx.params.id);
 };
@@ -56,26 +81,45 @@ getAppointmentById.validationScheme = {
 };
 
 
+
 const createAppointment = async (ctx) => {
+  let userId = 0;
+  try {
+    const user = await userService.getByAuth0id(ctx.state.user.sub);
+    userId = user.id;
+  } catch (err) {
+    await addUserInfo(ctx);
+    userId = await userService.register({
+      auth0id: ctx.state.user.sub,
+      firstName: ctx.state.user.firstName,
+      lastName: ctx.state.user.lastName,
+      birthdate: ctx.state.user.birthdate,
+      email: ctx.state.user.email,
+      weight: ctx.state.user.weight,
+      height: ctx.state.user.height,
+    });
+  }
+
   const newAppointment = await appointmentService.create({
     ...ctx.request.body,
     date: new Date(ctx.request.body.date),
     startTime: new Date(ctx.request.body.startTime),
     endTime: new Date(ctx.request.body.endTime),
+    trainingId: Number(ctx.request.body.trainingId),
+    userId,
   });
   ctx.body = newAppointment;
   ctx.status = 201;
 };
+
 createAppointment.validationScheme = {
   body: {
     date: Joi.date().required().iso().min('now'),
-    userId: Joi.number().integer().positive().required(),
     trainingId: Joi.number().integer().positive().required(),
     startTime: Joi.date().required().iso().min('now'),
     endTime: Joi.date().required().iso().min('now'),
     intensity: Joi.number().integer().min(0).max(5).required(),
     specialRequest: Joi.string().optional(),
-
   },
 };
 
@@ -83,7 +127,6 @@ createAppointment.validationScheme = {
 const updateAppointment = async (ctx) => {
   ctx.body = await appointmentService.updateById(ctx.params.id, {
     ...ctx.request.body,
-    userId: Number(ctx.request.body.userId),
     date: new Date(ctx.request.body.date),
     startTime: new Date(ctx.request.body.startTime),
     endTime: new Date(ctx.request.body.endTime),
@@ -96,7 +139,6 @@ updateAppointment.validationScheme = {
   },
   body: {
     date: Joi.date().required().iso().min('now'),
-    userId: Joi.number().integer().positive().required(),
     trainingId: Joi.number().integer().positive().required(),
     startTime: Joi.date().required().iso().min('now'),
     endTime: Joi.date().required().iso().min('now'),
@@ -122,11 +164,13 @@ module.exports = (app) => {
     prefix: '/appointments',
   });
 
-  router.get('/', validate(getAllAppointments.validationScheme), getAllAppointments);
-  router.get('/:id', validate(getAppointmentById.validationScheme), getAppointmentById);
-  router.post('/', validate(createAppointment.validationScheme), createAppointment);
-  router.put('/:id', validate(updateAppointment.validationScheme), updateAppointment);
-  router.delete('/:id', validate(deleteAppointment.validationScheme), deleteAppointment);
+
+  router.get('/', hasPermission(permissions.read), validate(getAllAppointmentsForUser.validationScheme), getAllAppointmentsForUser);
+  router.get('/all', hasPermission(permissions.read), validate(getAllAppointments.validationScheme), getAllAppointments);
+  router.get('/:id', hasPermission(permissions.read), validate(getAppointmentById.validationScheme), getAppointmentById);
+  router.post('/', hasPermission(permissions.write), validate(createAppointment.validationScheme), createAppointment);
+  router.put('/:id', hasPermission(permissions.write), validate(updateAppointment.validationScheme), updateAppointment);
+  router.delete('/:id', hasPermission(permissions.write), validate(deleteAppointment.validationScheme), deleteAppointment);
 
 
   app.use(router.routes()).use(router.allowedMethods());

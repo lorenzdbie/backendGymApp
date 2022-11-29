@@ -44,6 +44,7 @@ const create = async ({
   weight,
   height,
   credits,
+  auth0id,
 }) => {
   try {
     const [id] = await getKnex()(tables.user).insert({
@@ -54,6 +55,7 @@ const create = async ({
       weight,
       height,
       credits,
+      auth0id,
     });
     return id;
   } catch (error) {
@@ -73,6 +75,7 @@ const updateById = async (id, {
   weight,
   height,
   credits,
+  auth0id,
 }) => {
   try {
     await getKnex()(tables.user).update({
@@ -83,6 +86,7 @@ const updateById = async (id, {
       weight,
       height,
       credits,
+      auth0id,
     }).where('id', id);
     return id;
   } catch (error) {

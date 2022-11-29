@@ -83,7 +83,13 @@ module.exports = async function createServer() {
     },
   }));
 
-
+  // app.use(async (ctx, next) => {
+  //   const logger = getLogger();
+  //   logger.debug(`authorization header: ${ctx.headers.authorization}`);
+  //   logger.debug(`userStare:  ${JSON.stringify(ctx.state.user)}`);
+  //   logger.debug(`jwtOriginalError: ${ctx.state.jwtOriginalError}`);
+  //   await next();
+  // });
 
   app.use(async (ctx, next) => {
 
@@ -151,6 +157,11 @@ module.exports = async function createServer() {
           statusCode = 403;
         }
       }
+      if (ctx.state.jwtOriginalError) {
+        statusCode = 403;
+        errorBody.details.jwtOriginalError = serializeError(ctx.state.jwtOriginalError);
+      }
+
       ctx.status = statusCode;
       ctx.body = errorBody;
     }
@@ -165,7 +176,7 @@ module.exports = async function createServer() {
 
     start() {
       return new Promise((resolve) => {
-        const port = process.env.PORT || 9000;
+        const port = config.get('port');
         app.listen(port);
         logger.info(`🚀 Server listening on http://localhost:${port}`);
         resolve();

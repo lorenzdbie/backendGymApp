@@ -2,7 +2,7 @@ const userRepository = require('../repository/user');
 const {
   getLogger,
 } = require('../core/logging');
-const serviceError = require('../core/serviceError');
+const ServiceError = require('../core/serviceError');
 
 
 const debugLog = (message, meta = {}) => {
@@ -47,7 +47,7 @@ const getByAuth0id = async (auth0id) => {
   const user = await userRepository.findByAuth0id(auth0id);
 
   if (!user) {
-    throw serviceError.notFound(`No user with id ${auth0id} exists`, {
+    throw ServiceError.notFound(`No user with id ${auth0id} exists`, {
       auth0id,
     });
   }
@@ -69,6 +69,11 @@ const getAll = async () => {
 const getById = async (id) => {
   debugLog(`Fetching user with id ${id}`);
   const user = await userRepository.findById(id);
+  if (!user) {
+    throw ServiceError.notFound(`No user with id ${id} exists`, {
+      id,
+    });
+  }
   return user;
 };
 
@@ -77,11 +82,9 @@ const updateById = async (id, {
   lastName,
   birthdate,
   email,
-  password,
   weight,
   height,
   credits,
-  role,
 }) => {
   debugLog(`Updating user with id ${id}`, {
     firstName,
@@ -92,11 +95,9 @@ const updateById = async (id, {
     lastName,
     birthdate,
     email,
-    password,
     weight,
     height,
     credits,
-    role,
   });
   return getById(id);
 };
@@ -107,7 +108,7 @@ const deleteById = async (id) => {
   const deleted = await userRepository.deleteById(id);
 
   if (!deleted) {
-    throw new Error(`User with id ${id} doesn't exist`, {
+    throw ServiceError.notFound(`User with id ${id} doesn't exist`, {
       id,
     });
   }

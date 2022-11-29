@@ -22,6 +22,17 @@ const getAll = async () => {
   };
 };
 
+const getAllAppointmentforUser = async (id) => {
+  debugLog(`Fetching all appointments for user with id ${id}`);
+  const appointments = await appointmentRepository.getAllAppointmentsForUser(id);
+  const totalCount = await appointmentRepository.findCountForUser(id);
+  // console.log(appointments, totalCount);
+  return {
+    appointments,
+    count: totalCount,
+  };
+};
+
 const getById = async (id) => {
   debugLog(`Fetching appointment with id ${id}`);
   const appointment = await appointmentRepository.findById(id);
@@ -163,6 +174,7 @@ const deleteById = async (id) => {
 module.exports = {
   getAll,
   getById,
+  getAllAppointmentforUser,
   create,
   updateById,
   deleteById,

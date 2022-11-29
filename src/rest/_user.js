@@ -35,27 +35,37 @@ getUserById.validationScheme = {
   },
 };
 
-// const register = async (ctx) => {
-//   const session = await userService.register({
-//     ...ctx.request.body,
-//     birthdate: new Date(ctx.request.body.birthdate),
-//   });
-//   ctx.body = session;
-//   ctx.status = 201;
-// };
-// register.validationScheme = {
-//   body: {
-//     firstName: Joi.string().required(),
-//     lastName: Joi.string().required(),
-//     birthdate: Joi.date().required(),
-//     email: Joi.string().email().required(),
-//     password: Joi.string().required(),
-//     weight: Joi.number().positive().optional(),
-//     height: Joi.number().positive().optional(),
-//     credits: Joi.number().positive().optional(),
-//     role: Joi.string().optional(),
-//   },
-// };
+const register = async (ctx) => {
+  const auth0id = ctx.state.user.sub;
+
+  // console.log(...ctx.state.user);
+  // console.log(`auth0id: ${auth0id}`);
+  // console.log(`firstname: ${ctx.request.body.firstName}`);
+  // console.log(`lastname: ${ctx.request.body.lastName}`);
+  // console.log(`birthdate: ${ctx.request.body.birthdate}`);
+  // console.log(`email: ${ctx.request.body.email}`);
+  // console.log(`weight: ${ctx.request.body.weight}`);
+  // console.log(`height: ${ctx.request.body.height}`);
+
+  const session = await userService.register({
+    ...ctx.request.body,
+    birthdate: new Date(ctx.request.body.birthdate),
+    auth0id,
+  });
+  ctx.body = session;
+  ctx.status = 201;
+};
+register.validationScheme = {
+  body: {
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
+    birthdate: Joi.date().required(),
+    email: Joi.string().email().required(),
+    weight: Joi.number().positive().optional(),
+    height: Joi.number().positive().optional(),
+    credits: Joi.number().positive().optional(),
+  },
+};
 
 // const login = async (ctx) => {
 //   const {
@@ -88,11 +98,9 @@ updateUserById.validationScheme = {
     lastName: Joi.string().required(),
     birthdate: Joi.date().required(),
     email: Joi.string().email().required(),
-    password: Joi.string().required(),
     weight: Joi.number().positive().optional(),
     height: Joi.number().positive().optional(),
     credits: Joi.number().positive().optional(),
-    role: Joi.string().optional(),
   },
 };
 
@@ -112,7 +120,7 @@ module.exports = function installUserRouter(app) {
     prefix: '/users',
   });
 
-  // userRouter.post('/register', validate(register.validationScheme), register);
+  userRouter.post('/register', validate(register.validationScheme), register);
   // userRouter.post('/login', validate(login.validationScheme), login);
 
   userRouter.get('/', validate(getAllUsers.validationScheme), getAllUsers);

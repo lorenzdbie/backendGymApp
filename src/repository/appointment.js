@@ -64,6 +64,22 @@ const findCount = async () => {
   return count['count(*)'];
 };
 
+const findCountForUser = async (id) => {
+  const [count] = await getKnex()(tables.appointment)
+    .join(`${tables.user}`, `${tables.appointment}.user_id`, '=', `${tables.user}.id`)
+    .where(`${tables.user}.id`, id).count();
+  return count['count(*)'];
+};
+
+const getAllAppointmentsForUser = async (id) => {
+  const appointments = await getKnex()(tables.appointment).select(SELECT_COLUMNS)
+    .join(`${tables.user}`, `${tables.appointment}.user_id`, '=', `${tables.user}.id`)
+    .join(`${tables.training}`, `${tables.appointment}.training_id`, '=', `${tables.training}.id`)
+    .where(`${tables.user}.id`, id);
+
+  // console.log(appointments);
+  return appointments.map(formatAppointment);
+};
 
 
 const findById = async (id) => {
@@ -151,6 +167,8 @@ const deleteById = async (id) => {
 module.exports = {
   findAll,
   findCount,
+  getAllAppointmentsForUser,
+  findCountForUser,
   findById,
   create,
   updateById,
