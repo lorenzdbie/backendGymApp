@@ -1,5 +1,5 @@
 const Router = require('@koa/router');
-const Joi = require('joi');
+const Joi = require('joi').extend(require('@joi/date'));
 
 
 
@@ -60,7 +60,9 @@ const getAllAppointmentsForUser = async (ctx) => {
   const user = await userService.getByAuth0id(ctx.state.user.sub);
   userId = user.id;
   const appointments = await appointmentService.getAllAppointmentforUser(userId);
-  console.log({...appointments});
+  console.log({
+    ...appointments,
+  });
   ctx.body = appointments;
 };
 getAllAppointmentsForUser.validationScheme = {
@@ -114,7 +116,7 @@ const createAppointment = async (ctx) => {
 
 createAppointment.validationScheme = {
   body: {
-    date: Joi.date().required().iso().min('now'),
+    date: Joi.date().required().iso().min(-1),
     trainingId: Joi.number().integer().positive().required(),
     startTime: Joi.date().required().iso().min('now'),
     endTime: Joi.date().required().iso().min('now'),
@@ -125,12 +127,17 @@ createAppointment.validationScheme = {
 
 
 const updateAppointment = async (ctx) => {
+  // let userId = 0;
+  // const user = await userService.getByAuth0id(ctx.state.user.sub);
+  // userId = user.id;
   ctx.body = await appointmentService.updateById(ctx.params.id, {
     ...ctx.request.body,
+    userId: Number(ctx.request.body.userId),
     date: new Date(ctx.request.body.date),
     startTime: new Date(ctx.request.body.startTime),
     endTime: new Date(ctx.request.body.endTime),
     trainingId: Number(ctx.request.body.trainingId),
+    // auth0id: ctx.state.user.sub,
   });
 };
 updateAppointment.validationScheme = {
@@ -138,7 +145,8 @@ updateAppointment.validationScheme = {
     id: Joi.number().integer().positive().required(),
   },
   body: {
-    date: Joi.date().required().iso().min('now'),
+    userId: Joi.number().integer().positive().required(),
+    date: Joi.date().required().iso().min(-1),
     trainingId: Joi.number().integer().positive().required(),
     startTime: Joi.date().required().iso().min('now'),
     endTime: Joi.date().required().iso().min('now'),

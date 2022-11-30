@@ -32,6 +32,7 @@
     "exec": "node --inspect=0.0.0.0:9001 --trace-warnings src/index.js"
   },
   "dependencies": {
+    "@joi/date": "^2.1.0",
     "@koa/cors": "^3.4.2",
     "@koa/router": "^12.0.0",
     "axios": "^1.2.0",
