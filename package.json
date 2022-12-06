@@ -11,6 +11,7 @@
   },
   "scripts": {
     "start": "npx env-cmd nodemon",
+    "start:prod": "node src/index.js",
     "test": "npx env-cmd -f .env.test jest",
     "test:coverage": "npx env-cmd -f .env.test jest --coverage",
     "test:ci": "jest",
