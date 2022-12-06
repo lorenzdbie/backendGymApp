@@ -121,7 +121,7 @@ createAppointment.validationScheme = {
     startTime: Joi.date().required().iso().min('now'),
     endTime: Joi.date().required().iso().min('now'),
     intensity: Joi.number().integer().min(0).max(5).required(),
-    specialRequest: Joi.string().optional(),
+    specialRequest: Joi.string().allow(null, '').optional(),
   },
 };
 
@@ -151,7 +151,7 @@ updateAppointment.validationScheme = {
     startTime: Joi.date().required().iso().min('now'),
     endTime: Joi.date().required().iso().min('now'),
     intensity: Joi.number().integer().min(0).max(5).required(),
-    specialRequest: Joi.string().optional(),
+    specialRequest: Joi.string().allow(null, '').optional(),
   },
 };
 

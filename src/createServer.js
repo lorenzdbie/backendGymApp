@@ -38,7 +38,7 @@ const LOG_LEVEL = config.get('log.level');
 const LOG_DISABLED = config.get('log.disabled');
 
 
-console.log(`log level ${LOG_LEVEL}, logs enabled: ${LOG_DISABLED !== true}`);
+// console.log(`log level ${LOG_LEVEL}, logs enabled: ${LOG_DISABLED !== true}`);
 
 module.exports = async function createServer() {
 
@@ -158,7 +158,9 @@ module.exports = async function createServer() {
         }
       }
       if (ctx.state.jwtOriginalError) {
-        statusCode = 403;
+        statusCode = 401;
+        errorBody.code = 'UNAUTHORIZED';
+        errorBody.message = ctx.state.jwtOriginalError.message;
         errorBody.details.jwtOriginalError = serializeError(ctx.state.jwtOriginalError);
       }
 
