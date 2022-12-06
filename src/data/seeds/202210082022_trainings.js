@@ -9,29 +9,61 @@ module.exports = {
 
     await knex(tables.training).insert([{
       id: 1,
-      name: 'Bench press',
-      muscleGroup: 'chest',
+      name: 'Strength: Chest',
+      muscleGroup: 'all chest muscles',
     },
     {
       id: 2,
-      name: 'legs',
-      muscleGroup: 'legs',
+      name: 'Strength: Legs',
+      muscleGroup: 'all leg muscles',
     },
     {
       id: 3,
-      name: 'Squat',
-      muscleGroup: 'Glutus Maximus, hamstring, quads',
+      name: 'Strength: Back',
+      muscleGroup: 'all back muscles',
     },
     {
       id: 4,
-      name: 'Pull-up',
-      muscleGroup: 'Back',
+      name: 'Strength: Shoulders',
+      muscleGroup: 'all shoulder muscles',
     },
     {
       id: 5,
-      name: 'Shoulder press',
-      muscleGroup: 'Shoulders',
+      name: 'Strength: Arms',
+      muscleGroup: 'all arm muscles',
     },
+    {
+      id: 6,
+      name: 'Strength: Core',
+      muscleGroup: 'all core muscles',
+    },
+    {
+      id: 7,
+      name: 'Calisthenics',
+      muscleGroup: 'all muscles',
+    },
+    {
+      id: 8,
+      name: 'HITT',
+      muscleGroup: 'high intensity interval training',
+    }, 
+    {
+      id: 9,
+      name: 'low intensity cardio',
+      muscleGroup: 'various',
+    }, 
+    {
+      id: 10,
+      name: 'medium intensity cardio',
+      muscleGroup: 'various',
+    }, 
+    {
+      id: 11,
+      name: 'high intensity cardio',
+      muscleGroup: 'various',
+    },
+  
+
     ]);
   },
 };

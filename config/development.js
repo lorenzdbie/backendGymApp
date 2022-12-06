@@ -10,10 +10,10 @@ module.exports = {
   },
   database: {
     client: 'mysql2',
-    host: 'vichogent.be',
-    port: 40043,
-    name: '702547ld',
-    username: '702547ld',
-    password: 'nEO2l9MSWZoij3qloyHl',
+    host: 'localhost',
+    port: 3306,
+    name: 'fitnessapp',
+    username: 'root',
+    password: 'root-root',
   },
 };

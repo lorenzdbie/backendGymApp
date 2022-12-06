@@ -51,6 +51,17 @@ module.exports = {
       credits: 10,
       auth0id: '',
     },
+    {
+      id: 5,
+      firstName: 'Test firstName',
+      lastName: 'Test lastName',
+      birthdate: new Date(1990, 10 -1, 31),
+      email: 'e2e-testing@fitnessapp.be',
+      weight: 83.0,
+      height: 1.80,
+      credits: 10,
+      auth0id: 'auth0|638f08cd7d15baded5cce364',
+    },
     ]);
   },
 };

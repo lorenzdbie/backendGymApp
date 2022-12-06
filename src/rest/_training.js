@@ -2,6 +2,10 @@ const Router = require('@koa/router');
 const Joi = require('joi');
 
 const trainingService = require('../service/training');
+const {
+  hasPermission,
+  permissions,
+} = require('../core/auth');
 
 const validate = require('./_validation');
 
@@ -72,11 +76,11 @@ module.exports = (app) => {
   });
 
 
-  router.get('/', validate(getAllTrainings.validationScheme), getAllTrainings);
-  router.get('/:id', validate(getTrainingById.validationScheme), getTrainingById);
-  router.post('/', validate(createTraining.validationScheme), createTraining);
-  router.put('/:id', validate(updateTrainingById.validationScheme), updateTrainingById);
-  router.delete('/:id', validate(deleteTrainingById.validationScheme), deleteTrainingById);
+  router.get('/', hasPermission(permissions.read), validate(getAllTrainings.validationScheme), getAllTrainings);
+  router.get('/:id', hasPermission(permissions.read), validate(getTrainingById.validationScheme), getTrainingById);
+  router.post('/', hasPermission(permissions.write), validate(createTraining.validationScheme), createTraining);
+  router.put('/:id', hasPermission(permissions.write), validate(updateTrainingById.validationScheme), updateTrainingById);
+  router.delete('/:id', hasPermission(permissions.write), validate(deleteTrainingById.validationScheme), deleteTrainingById);
 
   app.use(router.routes()).use(router.allowedMethods());
 

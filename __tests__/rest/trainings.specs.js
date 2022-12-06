@@ -18,24 +18,19 @@ const data = {
     id: 100,
     name: 'test training name 1',
     muscleGroup: 'test muscleGroup 1',
-  },
-  {
+  }, {
     id: 110,
     name: 'test training name 2',
     muscleGroup: 'test muscleGroup 2',
-
-  },
-  {
+  }, {
     id: 120,
     name: 'test training name 3',
     muscleGroup: 'test muscleGroup 3',
-  },
-  {
+  },{
     id: 130,
     name: 'test training name 4',
     muscleGroup: 'test muscleGroup 4',
-  },
-  {
+  },{
     id: 140,
     name: 'test training name 5',
     muscleGroup: 'test muscleGroup 5',
@@ -52,14 +47,17 @@ const dataToDelete = {
 describe('TrainingExercises', () => {
   let knex;
   let request;
+  let authHeader;
 
 
   withServer(({
     knex: k,
     request: r,
+    authHeader: a,
   }) => {
     knex = k;
     request = r;
+    authHeader = a;
   });
 
   const url = '/api/trainings';
@@ -76,7 +74,7 @@ describe('TrainingExercises', () => {
 
     test('should return 200 and all trainingExcercises', async () => {
 
-      const response = await request.get(url);
+      const response = await request.get(url).set('Authorization', authHeader);
       expect(response.status).toBe(200);
 
       expect(response.body.count).toBeGreaterThanOrEqual(4);
@@ -95,7 +93,7 @@ describe('TrainingExercises', () => {
     });
 
     test('should return 200 and the trainingExcercise with the given id', async () => {
-      const response = await request.get(`${url}/${data.trainings[0].id}`);
+      const response = await request.get(`${url}/${data.trainings[0].id}`).set('Authorization', authHeader);
       expect(response.status).toBe(200);
       expect(response.body).toEqual(data.trainings[0]);
     });
@@ -110,7 +108,7 @@ describe('TrainingExercises', () => {
     });
 
     test('should return 201 and the created trainingExcercise with the musle group: Back', async () => {
-      const response = await request.post(url).send({
+      const response = await request.post(url).set('Authorization', authHeader).send({
         name: 'Cable rows',
         muscleGroup: 'Back',
       });
@@ -136,7 +134,7 @@ describe('TrainingExercises', () => {
     });
 
     test('should return 200 and the updated trainingExcercise with muscle group: Gastrocnemius', async () => {
-      const response = await request.put(`${url}/${data.trainings[0].id}`).send({
+      const response = await request.put(`${url}/${data.trainings[0].id}`).set('Authorization', authHeader).send({
         name: 'Calf Raise',
         muscleGroup: 'Gastrocnemius',
       });
@@ -155,7 +153,7 @@ describe('TrainingExercises', () => {
     });
 
     test('should return 204, delete the trainingExcercise with the given id and return nothing', async () => {
-      const response = await request.delete(`${url}/${data.trainings[0].id}`);
+      const response = await request.delete(`${url}/${data.trainings[0].id}`).set('Authorization', authHeader);
       expect(response.status).toBe(204);
       expect(response.body).toEqual({});
     });

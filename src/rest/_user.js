@@ -2,15 +2,12 @@ const Router = require('@koa/router');
 const Joi = require('joi');
 
 const userService = require('../service/user');
+const {
+  hasPermission,
+  permissions,
+} = require('../core/auth');
 
 const validate = require('./_validation');
-
-
-
-
-
-
-
 
 
 
@@ -120,13 +117,13 @@ module.exports = function installUserRouter(app) {
     prefix: '/users',
   });
 
-  userRouter.post('/register', validate(register.validationScheme), register);
+  userRouter.post('/register', hasPermission(permissions.write), validate(register.validationScheme), register);
   // userRouter.post('/login', validate(login.validationScheme), login);
 
-  userRouter.get('/', validate(getAllUsers.validationScheme), getAllUsers);
-  userRouter.get('/:id', validate(getUserById.validationScheme), getUserById);
-  userRouter.put('/:id', validate(updateUserById.validationScheme), updateUserById);
-  userRouter.delete('/:id', validate(deleteUserById.validationScheme), deleteUserById);
+  userRouter.get('/', hasPermission(permissions.read), validate(getAllUsers.validationScheme), getAllUsers);
+  userRouter.get('/:id', hasPermission(permissions.read), validate(getUserById.validationScheme), getUserById);
+  userRouter.put('/:id',hasPermission(permissions.write), validate(updateUserById.validationScheme), updateUserById);
+  userRouter.delete('/:id',hasPermission(permissions.write), validate(deleteUserById.validationScheme), deleteUserById);
 
   app.use(userRouter.routes())
     .use(userRouter.allowedMethods());
