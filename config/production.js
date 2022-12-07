@@ -5,7 +5,7 @@ module.exports = {
     disabled: false,
   },
   cors: {
-    origins: ['http://localhost:5173'],
+    origins: ['https://two223-frontendweb-lorenzdebie.onrender.com'],
     maxAge: 3 * 60 * 60,
   },
   database: {
