@@ -120,7 +120,7 @@ module.exports = function installUserRouter(app) {
   userRouter.post('/register', hasPermission(permissions.write), validate(register.validationScheme), register);
   // userRouter.post('/login', validate(login.validationScheme), login);
 
-  userRouter.get('/', hasPermission(permissions.read), validate(getAllUsers.validationScheme), getAllUsers);
+  userRouter.get('/', hasPermission(permissions.loggedIn), validate(getAllUsers.validationScheme), getAllUsers);
   userRouter.get('/:id', hasPermission(permissions.read), validate(getUserById.validationScheme), getUserById);
   userRouter.put('/:id',hasPermission(permissions.write), validate(updateUserById.validationScheme), updateUserById);
   userRouter.delete('/:id',hasPermission(permissions.write), validate(deleteUserById.validationScheme), deleteUserById);
