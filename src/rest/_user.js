@@ -32,6 +32,13 @@ getUserById.validationScheme = {
   },
 };
 
+const getUserByAuth0id = async (ctx) => {
+  const auth0id = ctx.state.user.sub;
+  const user = await userService.getByAuth0id(auth0id);
+  ctx.body = user;
+};
+
+
 const register = async (ctx) => {
   const auth0id = ctx.state.user.sub;
 
@@ -119,11 +126,12 @@ module.exports = function installUserRouter(app) {
 
   userRouter.post('/register', hasPermission(permissions.write), validate(register.validationScheme), register);
   // userRouter.post('/login', validate(login.validationScheme), login);
+  userRouter.get('/check', hasPermission(permissions.read), getUserByAuth0id);
 
   userRouter.get('/', hasPermission(permissions.loggedIn), validate(getAllUsers.validationScheme), getAllUsers);
   userRouter.get('/:id', hasPermission(permissions.read), validate(getUserById.validationScheme), getUserById);
-  userRouter.put('/:id',hasPermission(permissions.write), validate(updateUserById.validationScheme), updateUserById);
-  userRouter.delete('/:id',hasPermission(permissions.write), validate(deleteUserById.validationScheme), deleteUserById);
+  userRouter.put('/:id', hasPermission(permissions.write), validate(updateUserById.validationScheme), updateUserById);
+  userRouter.delete('/:id', hasPermission(permissions.write), validate(deleteUserById.validationScheme), deleteUserById);
 
   app.use(userRouter.routes())
     .use(userRouter.allowedMethods());

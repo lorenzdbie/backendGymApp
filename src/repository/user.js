@@ -6,8 +6,8 @@ const {
   getKnex,
 } = require('../data/index');
 
-const findAll = () => {
-  return getKnex()(tables.user).select().orderBy('lastName', 'ASC').orderBy('firstName', 'ASC');
+const findAll = async () => {
+  return await getKnex()(tables.user).select().orderBy('lastName', 'ASC').orderBy('firstName', 'ASC');
 };
 
 const findCount = async () => {
@@ -15,14 +15,14 @@ const findCount = async () => {
   return count['count(*)'];
 };
 
-const findByAuth0id = (auth0id) => {
-  return getKnex()(tables.user)
+const findByAuth0id = async(auth0id) => {
+  return await getKnex()(tables.user)
     .where('auth0id', auth0id)
     .first();
 };
 
-const findById = (id) => {
-  return getKnex()(tables.user).where('id', id).first();
+const findById = async (id) => {
+  return await getKnex()(tables.user).where('id', id).first();
 };
 
 // const findByEmailAndPassword = async({
