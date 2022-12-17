@@ -26,7 +26,7 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
  - AUTH_USER_INFO="https://lorenz-debie-hogent.eu.auth0.com/userinfo"
 
 Pas daarna ook het bestand config/development.js aan naar uw locale database:
-<code><block>
+<block>
 database: {
     client: 'mysql2',
     host: 'localhost',
@@ -35,7 +35,7 @@ database: {
     username: 'root',
     password: 'root-root',
   },
- </block></code>
+ </block>
   
   
   Start daarna de applicatie op met <code>yarn start</code>
@@ -62,4 +62,17 @@ Maak een .env.test bestand aan met volgende gegevens:
  - AUTH_ISSUER="https://lorenz-debie-hogent.eu.auth0.com/"
  - AUTH_USER_INFO="https://lorenz-debie-hogent.eu.auth0.com/userinfo"
 
-> Schrijf hier hoe we de testen uitvoeren (.env bestanden aanmaken, commando's om uit te voeren...)
+Pas daarna ook het bestand config/test.js aan naar uw locale database:
+<block>
+database: {
+    client: 'mysql2',
+    host: 'localhost',
+    port: 3306,
+    name: 'fitnessapp_test',
+    username: 'root',
+    password: 'root-root',
+  },
+ </block>
+ 
+Run de testen met <code>yarn test</code>, om te testen met coverage gebruik: <code>yarn test:coverage</code>
+
