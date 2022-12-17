@@ -40,6 +40,9 @@ database: {
   
   
   Start daarna de applicatie op met <code>yarn start</code>
+  
+  Om de applicatie in productie te draaien gebruike volgende commando: <code>yarn start:prod</code>.
+  Hier wordt de vichogent.be database gebruikt.
  
 
 > Schrijf hier hoe we de applicatie starten (.env bestanden aanmaken, commando's om uit te voeren...)
