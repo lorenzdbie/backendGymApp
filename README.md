@@ -13,7 +13,6 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
 - [Yarn](https://yarnpkg.com)
 - [MySQL Community Server](https://dev.mysql.com/downloads/mysql/)
 
-> Vul eventueel aan
 
 ## Opstarten
 
@@ -27,7 +26,7 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
  - AUTH_USER_INFO="https://lorenz-debie-hogent.eu.auth0.com/userinfo"
 
 Pas daarna ook het bestand config/development.js aan naar uw locale database:
-<code>
+<code><block>
 database: {
     client: 'mysql2',
     host: 'localhost',
@@ -36,7 +35,7 @@ database: {
     username: 'root',
     password: 'root-root',
   },
-  </code>
+ </block></code>
   
   
   Start daarna de applicatie op met <code>yarn start</code>
@@ -45,9 +44,22 @@ database: {
   Hier wordt de vichogent.be database gebruikt.
  
 
-> Schrijf hier hoe we de applicatie starten (.env bestanden aanmaken, commando's om uit te voeren...)
-
 
 ## Testen
+
+Maak een .env.test bestand aan met volgende gegevens:
+ - NODE_ENV=test
+ - DATABASE_USERNAME="root"
+ - DATABASE_PASSWORD="root-root"
+ - AUTH_TEST_USER_USER_ID="auth0|638f08cd7d15baded5cce364"
+ - AUTH_TEST_USER_USERNAME="e2e-testing@fitnessapp.be"
+ - AUTH_TEST_USER_PASSWORD="e2eTeste2e"
+ - AUTH_TOKEN_URL="https://lorenz-debie-hogent.eu.auth0.com/oauth/token"
+ - AUTH_CLIENT_ID="butPgWOoPmOjlkIkbdHA2uC7KRBPXpRX"
+ - AUTH_CLIENT_SECRET="IgYD3ZQPJW63zDaeLIH3DfQ1_x3a8xx3h3DSm_6gEKQJBAcV1XROrqpfnhDEf3Wl"
+ - AUTH_JWKS_URI="https://lorenz-debie-hogent.eu.auth0.com/.well-known/jwks.json"
+ - AUTH_AUDIENCE="https://fitness-app-lorenz-hogent.be"
+ - AUTH_ISSUER="https://lorenz-debie-hogent.eu.auth0.com/"
+ - AUTH_USER_INFO="https://lorenz-debie-hogent.eu.auth0.com/userinfo"
 
 > Schrijf hier hoe we de testen uitvoeren (.env bestanden aanmaken, commando's om uit te voeren...)
