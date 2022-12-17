@@ -57,7 +57,7 @@ const create = async ({
       credits,
       auth0id,
     });
-    return id;
+    return findById(id);
   } catch (error) {
     const logger = getLogger();
     logger.error('Error in create', {

@@ -25,8 +25,12 @@ const fetchAccessToken = async () => {
     scope: 'openid profile email offline_access',
     client_id: config.get('auth.clientId'),
     client_secret: config.get('auth.clientSecret'),
+  }, {
+    headers: {
+      'Accept-Encoding': '*',
+    },
   });
-
+  // console.debug(response.data.access_token);
   return response.data.access_token;
 };
 

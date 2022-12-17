@@ -16,10 +16,17 @@ module.exports = {
     tokenUrl: 'AUTH_TOKEN_URL',
     clientId: 'AUTH_CLIENT_ID',
     clientSecret: 'AUTH_CLIENT_SECRET',
+
+
     testUser: {
       userId: 'AUTH_TEST_USER_USER_ID',
       username: 'AUTH_TEST_USER_USERNAME',
       password: 'AUTH_TEST_USER_PASSWORD',
     },
+
+  },
+  google: {
+    clientId: 'AUTH_GMAIL_CLIENT_ID',
+    clientSecret: 'AUTH_GMAIL_CLIENT_SECRET',
   },
 };

@@ -1,10 +1,6 @@
 const Router = require('@koa/router');
 const Joi = require('joi').extend(require('@joi/date'));
 
-
-
-// const swaggerConfig = require('../../swagger.config');
-
 const appointmentService = require('../service/appointment');
 const userService = require('../service/user');
 const {
@@ -14,34 +10,10 @@ const {
 } = require('../core/auth');
 
 
+const transport = require('./_mailer');
 const validate = require('./_validation');
 
-// /**
-//  * @swagger
-//  *tags:
-//  *  name: Appointments
-//  *  description: Represents made fitness appointments
-//  */
 
-// /**
-//  * @swagger
-//  * /api/appointments:
-//  *   get:
-//  *     summary: Get all appointments(paginated)
-//  *     parameters:
-//  *        -$ref: '#/components/parameters/limitParam'
-//  *        -$ref: '#/components/parameters/offsetParam'
-//  *     responses:
-//  *        200:
-//  *           description: A list of appointments
-//  *           content:
-//  *              application/json:
-//  *                 schema:
-//  *                    $ref: '#/components/schemas/AppointmentList'
-//  *       
-//  * 
-//  * 
-//  */
 const getAllAppointments = async (ctx) => {
   const limit = ctx.query.limit && Number(ctx.query.limit);
   const offset = ctx.query.offset && Number(ctx.query.offset);
@@ -60,9 +32,9 @@ const getAllAppointmentsForUser = async (ctx) => {
   const user = await userService.getByAuth0id(ctx.state.user.sub);
   userId = user.id;
   const appointments = await appointmentService.getAllAppointmentforUser(userId);
-  console.log({
-    ...appointments,
-  });
+  // console.log({
+  //   ...appointments,
+  // });
   ctx.body = appointments;
 };
 getAllAppointmentsForUser.validationScheme = {
@@ -86,8 +58,9 @@ getAppointmentById.validationScheme = {
 
 const createAppointment = async (ctx) => {
   let userId = 0;
+  let user;
   try {
-    const user = await userService.getByAuth0id(ctx.state.user.sub);
+    user = await userService.getByAuth0id(ctx.state.user.sub);
     userId = user.id;
   } catch (err) {
     await addUserInfo(ctx);
@@ -112,6 +85,35 @@ const createAppointment = async (ctx) => {
   });
   ctx.body = newAppointment;
   ctx.status = 201;
+
+  const message = {
+    from: 'info@fitnessapp.be',
+    to: user.email,
+    subject: 'Appointment created',
+    text: `Dear ${user.firstName} ${user.lastName},\n\n    
+    Your appointment has been created.\n
+    Date: ${new Date(newAppointment.date).toLocaleDateString('en-BE',{ year: 'numeric',
+    month: 'short',
+    day: 'numeric'})}\n
+    Start time: ${new Date(newAppointment.startTime).toISOString().slice(11, 16)}\n
+    End time: ${new Date(newAppointment.endTime).toISOString().slice(11, 16)}\n
+    Training: ${newAppointment.training.name}\n
+    intensity: ${newAppointment.intensity}\n
+    Special request: ${newAppointment.specialRequest}\n
+    \n
+    Kind regards,\n
+    FitnessApp team`,
+  };
+
+  transport.sendMail(message, (err, info) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(info);
+    }
+  });
+
+
 };
 
 createAppointment.validationScheme = {

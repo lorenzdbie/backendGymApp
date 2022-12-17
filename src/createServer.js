@@ -93,7 +93,7 @@ module.exports = async function createServer() {
 
   app.use(async (ctx, next) => {
 
-    console.log(ctx.state.user);
+    // console.log(ctx.state.user);
 
     const logger = getLogger();
     logger.info(`${emoji.get('fast_forward')} ${ctx.method} ${ctx.url}`);
