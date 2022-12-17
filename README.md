@@ -26,7 +26,8 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
  - AUTH_USER_INFO="https://lorenz-debie-hogent.eu.auth0.com/userinfo"
 
 Pas daarna ook het bestand config/development.js aan naar uw locale database:
-<block>
+
+<code>
 database: {
     client: 'mysql2',
     host: 'localhost',
@@ -35,7 +36,7 @@ database: {
     username: 'root',
     password: 'root-root',
   },
- </block>
+ </code>
   
   
   Start daarna de applicatie op met <code>yarn start</code>
@@ -63,7 +64,8 @@ Maak een .env.test bestand aan met volgende gegevens:
  - AUTH_USER_INFO="https://lorenz-debie-hogent.eu.auth0.com/userinfo"
 
 Pas daarna ook het bestand config/test.js aan naar uw locale database:
-<block>
+
+<code>
 database: {
     client: 'mysql2',
     host: 'localhost',
@@ -72,7 +74,7 @@ database: {
     username: 'root',
     password: 'root-root',
   },
- </block>
+ </code>
  
 Run de testen met <code>yarn test</code>, om te testen met coverage gebruik: <code>yarn test:coverage</code>
 
