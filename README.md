@@ -51,8 +51,8 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
 
 Maak een .env.test bestand aan met volgende gegevens:
  - NODE_ENV=test
- - DATABASE_USERNAME="root"
- - DATABASE_PASSWORD="root-root"
+ - DATABASE_USERNAME="root" (of uw eigen database username)
+ - DATABASE_PASSWORD="root-root" (of uw eigen database password)
  - AUTH_TEST_USER_USER_ID="auth0|638f08cd7d15baded5cce364"
  - AUTH_TEST_USER_USERNAME="e2e-testing@fitnessapp.be"
  - AUTH_TEST_USER_PASSWORD="e2eTeste2e"
