@@ -37,7 +37,7 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
     password: 'root-root',
   },
  </code>
-  <br/>  
+  <br>  
   
   Start daarna de applicatie op met <code>yarn start</code>
   
@@ -75,7 +75,7 @@ Maak een .env.test bestand aan met volgende gegevens:
     password: 'root-root',
   },
  </code>
- <br/>
+ <br>
  
 Run de testen met <code>yarn test</code>, om te testen met coverage gebruik: <code>yarn test:coverage</code>
 
