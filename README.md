@@ -26,7 +26,7 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
  - AUTH_ISSUER="https://lorenz-debie-hogent.eu.auth0.com/"
  - AUTH_USER_INFO="https://lorenz-debie-hogent.eu.auth0.com/userinfo"
 
-Pas daarna ook het bestand config/production aan naar uw locale database:
+Pas daarna ook het bestand config/development.js aan naar uw locale database:
 <code>
 database: {
     client: 'mysql2',
