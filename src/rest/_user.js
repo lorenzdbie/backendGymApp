@@ -42,15 +42,6 @@ const getUserByAuth0id = async (ctx) => {
 const register = async (ctx) => {
   const auth0id = ctx.state.user.sub;
 
-  // console.log(...ctx.state.user);
-  // console.log(`auth0id: ${auth0id}`);
-  // console.log(`firstname: ${ctx.request.body.firstName}`);
-  // console.log(`lastname: ${ctx.request.body.lastName}`);
-  // console.log(`birthdate: ${ctx.request.body.birthdate}`);
-  // console.log(`email: ${ctx.request.body.email}`);
-  // console.log(`weight: ${ctx.request.body.weight}`);
-  // console.log(`height: ${ctx.request.body.height}`);
-
   const session = await userService.register({
     ...ctx.request.body,
     birthdate: new Date(ctx.request.body.birthdate),
