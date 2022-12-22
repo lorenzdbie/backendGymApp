@@ -1,3 +1,5 @@
+const config = require('config');
+
 module.exports = {
   port: 9000,
   log: {
@@ -7,6 +9,14 @@ module.exports = {
   cors: {
     origins: ['https://two223-frontendweb-lorenzdebie.onrender.com'],
     maxAge: 3 * 60 * 60,
+  },
+  database: {
+    client: 'mysql2',
+    host: config.get('database.host'),
+    port: config.get('database.port'),
+    name: config.get('database.name'),
+    username: config.get('database.username'),
+    password: config.get('database.password'),
   },
   // database: {
   //   client: 'mysql2',
