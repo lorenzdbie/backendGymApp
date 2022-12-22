@@ -1,5 +1,3 @@
-const config = require('config');
-
 module.exports = {
   port: 9000,
   log: {
@@ -12,12 +10,20 @@ module.exports = {
   },
   database: {
     client: 'mysql2',
-    host: config.get('database.host'),
-    port: config.get('database.port'),
-    name: config.get('database.name'),
-    username: config.get('database.username'),
-    password: config.get('database.password'),
+    host: 'DATABASE_HOST',
+    port: 'DATABASE_PORT',
+    name: 'DATABASE_NAME',
+    username: 'DATABASE_USERNAME',
+    password: 'DATABASE_PASSWORD',
   },
+  // database: {
+  //   client: 'mysql2',
+  //   host: config.get('database.host'),
+  //   port: config.get('database.port'),
+  //   name: config.get('database.name'),
+  //   username: config.get('database.username'),
+  //   password: config.get('database.password'),
+  // },
   // database: {
   //   client: 'mysql2',
   //   host: 'vichogent.be',
