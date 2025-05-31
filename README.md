@@ -1,10 +1,6 @@
 # Examenopdracht Web Services
 
 
-- Student: Lorenz De Bie
-- Studentennummer: 702547ld
-- E-mailadres: lorenz.debie@student.hogent.be
-
 ## Vereisten
 
 Ik verwacht dat volgende software reeds geïnstalleerd is:
